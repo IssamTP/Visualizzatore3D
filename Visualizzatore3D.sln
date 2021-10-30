@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Visualizzatore3D", "Visualizzatore3D\Visualizzatore3D.vcxproj", "{A61BA58E-C00A-4203-B07E-38A1D517175A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A61BA58E-C00A-4203-B07E-38A1D517175A}.Debug|x64.ActiveCfg = Debug|x64
+		{A61BA58E-C00A-4203-B07E-38A1D517175A}.Debug|x64.Build.0 = Debug|x64
+		{A61BA58E-C00A-4203-B07E-38A1D517175A}.Release|x64.ActiveCfg = Release|x64
+		{A61BA58E-C00A-4203-B07E-38A1D517175A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ACAEC8BE-04D9-46B2-9A84-7D9DC2BC4811}
+	EndGlobalSection
+EndGlobal
