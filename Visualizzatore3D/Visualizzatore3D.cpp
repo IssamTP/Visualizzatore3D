@@ -2,6 +2,7 @@
 //
 
 #include "framework.h"
+#include "Dialog.h"
 #include "Visualizzatore3D.h"
 
 #define MAX_LOADSTRING 100
@@ -25,11 +26,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Inserire qui il codice.
+    CDialog visualizzatore3D(hInstance);
+    visualizzatore3D.CreaDialog();
 
     // Inizializzare le stringhe globali
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_VISUALIZZATORE3D, szWindowClass, MAX_LOADSTRING);
+    LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    LoadString(hInstance, IDC_VISUALIZZATORE3D, szWindowClass, MAX_LOADSTRING);
+
+
     MyRegisterClass(hInstance);
 
     // Eseguire l'inizializzazione dall'applicazione:
@@ -97,9 +101,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Archivia l'handle di istanza nella variabile globale
 
-   DialogBox(hInstance, );
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   //HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_VISUALIZZATORE3D_DIALOG), nullptr, );
 
    if (!hWnd)
    {
