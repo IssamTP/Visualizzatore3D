@@ -2,8 +2,8 @@
 //
 
 #include "framework.h"
-#include "Dialog.h"
 #include "Visualizzatore3D.h"
+#include "Visualizzatore3DDlg.h"
 
 #define MAX_LOADSTRING 100
 
@@ -18,38 +18,34 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    CDialog visualizzatore3D(hInstance);
-    visualizzatore3D.CreaDialog();
+    CVisualizzatore3DDlg visualizzatore3D(hInstance, IDD_VISUALIZZATORE3D);
+    visualizzatore3D.CreaDialog(nullptr);
 
     // Inizializzare le stringhe globali
     LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadString(hInstance, IDC_VISUALIZZATORE3D, szWindowClass, MAX_LOADSTRING);
 
 
-    MyRegisterClass(hInstance);
-
+    //MyRegisterClass(hInstance);
     // Eseguire l'inizializzazione dall'applicazione:
-    if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
+    //if (!InitInstance (hInstance, nCmdShow))
+    //{
+    //   return FALSE;
+    //}
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_VISUALIZZATORE3D));
 
     MSG msg;
-
+    visualizzatore3D.MostraFinestra(SW_SHOW);
     // Ciclo di messaggi principale:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg) && IsDialogMessage(visualizzatore3D.HandleFinestra(), &msg) == TRUE)
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -101,8 +97,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Archivia l'handle di istanza nella variabile globale
 
+   HWND hWnd = nullptr;
    //HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-    HWND hWnd = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_VISUALIZZATORE3D_DIALOG), nullptr, );
 
    if (!hWnd)
    {

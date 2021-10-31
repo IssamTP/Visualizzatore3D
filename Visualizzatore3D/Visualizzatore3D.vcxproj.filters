@@ -30,12 +30,30 @@
     <ClInclude Include="Dialog.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Visualizzatore3DDlg.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SliderCtrl.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Visualizzatore3D.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Dialog.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Visualizzatore3DDlg.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="SliderCtrl.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,7 +9,10 @@
 // File di intestazione di Windows
 #include <windows.h>
 // File di intestazione Runtime C
+#include <iostream>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <map>
+#include <vector>
