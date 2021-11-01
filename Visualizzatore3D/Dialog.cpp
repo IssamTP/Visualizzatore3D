@@ -50,6 +50,7 @@ CDialog::~CDialog()
 void CDialog::CreaDialog(HWND parent)
 {
 	m_HandleFinestra = CreateDialogParam(m_Istanza, MAKEINTRESOURCE(m_IdRisorsaTemplate), parent, ProceduraDialog, 0UL);
+	CreaControlliDaRisorse();
 }
 
 void CDialog::MostraFinestra(int comandoShow)

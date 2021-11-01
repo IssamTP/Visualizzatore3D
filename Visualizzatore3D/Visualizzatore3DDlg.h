@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Dialog.h"
+#include "SliderCtrl.h"
+
 class CVisualizzatore3DDlg : public CDialog
 {
 protected:

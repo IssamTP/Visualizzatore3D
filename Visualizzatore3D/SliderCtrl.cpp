@@ -4,17 +4,18 @@
 CSliderCtrl::CSliderCtrl()
 	: CWindow()
 {
-	m_Minimo = 0U;
-	m_Massimo = 0U;
-	m_TipoSlider = CTL;
 }
 
-void CSliderCtrl::SetIntervallo(unsigned int minimo, unsigned int massimo)
+int CSliderCtrl::GetPosizioneCursore()
+{
+	return static_cast<unsigned int>(SendMessage(m_HandleFinestra, TBM_GETPOS, 0U, 0U));
+}
+
+void CSliderCtrl::SetIntervallo(int minimo, int massimo)
 {
 	if (m_HandleFinestra != nullptr && minimo < massimo)
 	{
-		m_Minimo = minimo;
-		m_Massimo = massimo;
-		SetScrollRange(m_HandleFinestra, static_cast<int>(m_TipoSlider), m_Minimo, m_Massimo, TRUE);
+		SendMessage(m_HandleFinestra, TBM_SETRANGE, TRUE, MAKELONG(minimo, massimo));
+		SendMessage(m_HandleFinestra, TBM_SETPOS, TRUE, (massimo - minimo) / 2);
 	}
 }
