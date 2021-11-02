@@ -6,6 +6,7 @@ CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
 	: CDialog(istanza, idRisorsa)
 {
 	m_HSlider = nullptr;
+	m_Texture = nullptr;
 	m_VSlider = nullptr;
 }
 
@@ -23,8 +24,10 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	m_HSlider->SetIntervallo(0u, 360U);
 	SetDlgItemText(m_HandleFinestra, IDC_HROT, TEXT("180°"));
 
-	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_LIST1, new CWindow()));
+	controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_LIST1, new CListCtrl()));
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_LIST1));
+	m_Texture = reinterpret_cast<CListCtrl*>(controllo->second);
+	m_Texture->AggiungiElemento(_T("Texture_1"), true);
 }
 
 void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
@@ -55,6 +58,20 @@ void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 			break;
 		};
 	}
+}
+
+void CVisualizzatore3DDlg::OnNotify(LPNMHDR pNMHDR)
+{
+	if (m_Texture != nullptr)
+	{
+		switch (pNMHDR->code)
+		{
+		case LVN_GETDISPINFO:
+			m_Texture->DisplayInfoNotification(reinterpret_cast<LV_DISPINFO*>(pNMHDR));
+			break;
+		}
+	}
+
 }
 
 void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)

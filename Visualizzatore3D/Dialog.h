@@ -17,6 +17,7 @@ public:
 	}
 protected:
 	virtual void CreaControlliDaRisorse() = 0;
+	virtual void OnNotify(LPNMHDR pNMHDR);
 	virtual void OnHScroll(WPARAM wParam, LPARAM lParam);
 	virtual void OnVScroll(WPARAM wParam, LPARAM lParam);
 	friend INT_PTR CALLBACK ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);

@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Dialog.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ListCtrl.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SliderCtrl.h" />
     <ClInclude Include="targetver.h" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="ListCtrl.cpp" />
     <ClCompile Include="SliderCtrl.cpp" />
     <ClCompile Include="Visualizzatore3D.cpp" />
     <ClCompile Include="Visualizzatore3DDlg.cpp" />

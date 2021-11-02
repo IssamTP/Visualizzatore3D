@@ -28,6 +28,9 @@ INT_PTR CALLBACK ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARA
 		// TODO: Pulizia risorse...
 		PostQuitMessage(EXIT_SUCCESS);
 		break;
+	case WM_NOTIFY:
+		g_Finestra->OnNotify(reinterpret_cast<LPNMHDR>(lParam));
+		break;
 	}
 	return messaggioGestito;
 }
@@ -56,6 +59,11 @@ void CDialog::CreaDialog(HWND parent)
 void CDialog::MostraFinestra(int comandoShow)
 {
 	ShowWindow(m_HandleFinestra, comandoShow);
+}
+
+void CDialog::OnNotify(LPNMHDR pNMHDR)
+{
+
 }
 
 void CDialog::OnHScroll(WPARAM wParam, LPARAM lParam)
