@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\mmarcianesi\source\repos\OGRE\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,6 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\mmarcianesi\source\repos\OGRE\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\mmarcianesi\source\repos\OGRE\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\mmarcianesi\source\repos\OGRE\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,6 +146,7 @@
     <ClInclude Include="Dialog.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ListCtrl.h" />
+    <ClInclude Include="OgreCtrl.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SliderCtrl.h" />
     <ClInclude Include="targetver.h" />
@@ -152,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="ListCtrl.cpp" />
+    <ClCompile Include="OgreCtrl.cpp" />
     <ClCompile Include="SliderCtrl.cpp" />
     <ClCompile Include="Visualizzatore3D.cpp" />
     <ClCompile Include="Visualizzatore3DDlg.cpp" />
