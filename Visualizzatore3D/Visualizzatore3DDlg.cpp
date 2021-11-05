@@ -30,6 +30,12 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	m_Texture->AggiungiElemento(_T("Texture_1"), true);
 }
 
+void CVisualizzatore3DDlg::CreaDialog(HWND parent)
+{
+	CDialog::CreaDialog(parent);
+	CreaControlloOgre();
+}
+
 void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 {
 	int posizione;
@@ -102,4 +108,10 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 			break;
 		};
 	}
+}
+
+void CVisualizzatore3DDlg::CreaControlloOgre()
+{
+	m_pOgre = new COgreCtrl();
+	m_pOgre->POgreRoot()->createRenderWindow("Ogre", 200, 200, false, nullptr);
 }

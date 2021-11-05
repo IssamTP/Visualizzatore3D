@@ -23,6 +23,9 @@ INT_PTR CALLBACK ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARA
 		messaggioGestito = TRUE;
 		DestroyWindow(g_Finestra->m_HandleFinestra);
 		break;
+	case WM_PAINT:
+		g_Finestra->OnPaint();
+		break;
 	case WM_DESTROY:
 		messaggioGestito = TRUE;
 		// TODO: Pulizia risorse...
@@ -61,17 +64,3 @@ void CDialog::MostraFinestra(int comandoShow)
 	ShowWindow(m_HandleFinestra, comandoShow);
 }
 
-void CDialog::OnNotify(LPNMHDR pNMHDR)
-{
-
-}
-
-void CDialog::OnHScroll(WPARAM wParam, LPARAM lParam)
-{
-
-}
-
-void CDialog::OnVScroll(WPARAM wParam, LPARAM lParam)
-{
-
-}
