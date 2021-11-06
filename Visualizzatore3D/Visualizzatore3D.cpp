@@ -1,22 +1,26 @@
-// Visualizzatore3D.cpp : Definisce il punto di ingresso dell'applicazione.
-//
-
-#include "framework.h"
 #include "Visualizzatore3D.h"
 #include "Visualizzatore3DDlg.h"
+
+using namespace Ogre;
 
 #define MAX_LOADSTRING 100
 
 // Variabili globali:
 HINSTANCE hInst;                                // istanza corrente
+String g_RendererName = "Direct3D11 Rendering Subsystem";
 WCHAR szTitle[MAX_LOADSTRING];                  // Testo della barra del titolo
 WCHAR szWindowClass[MAX_LOADSTRING];            // nome della classe della finestra principale
 
 // Dichiarazioni con prototipo di funzioni incluse in questo modulo di codice:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
+void OgreSetup();
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+Ogre::Root* g_Root;
+Ogre::Log* g_Log;
+Ogre::LogManager* g_LogManager;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -25,6 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     InitCommonControls();
 
+    OgreSetup();
     CVisualizzatore3DDlg visualizzatore3D(hInstance, IDD_VISUALIZZATORE3D);
     visualizzatore3D.CreaDialog(nullptr);
 
@@ -53,11 +58,39 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             DispatchMessage(&msg);
         }
     }
-
+    delete g_Root;
     return (int) msg.wParam;
 }
 
-
+void OgreSetup()
+{
+    g_LogManager = new LogManager();
+    g_Log = g_LogManager->getSingleton().createLog("Ogre.log",true, true, false);
+    g_Root = new Root(".\\plugins.cfg", String(), "Ogre.log");
+    RenderSystemList renderers = g_Root->getAvailableRenderers();
+    RenderSystemList::iterator it = renderers.begin();
+    RenderSystem* renderer = nullptr;
+    while (it != renderers.end())
+    {
+        renderer = *it;
+        if (renderer->getName().compare(g_RendererName) == 0)
+        {
+            g_Root->setRenderSystem(renderer);
+            break;
+        }
+        ++it;
+    }
+    renderer = g_Root->getRenderSystem();
+    if (renderer != nullptr)
+    {
+        renderer->setConfigOption("Full Screen", "No");
+        renderer->setConfigOption("VSync", "Yes");
+        renderer->setConfigOption("Anti aliasing", "No");
+    }
+    if (!g_Root->restoreConfig())
+        g_Root->showConfigDialog(nullptr);
+    g_Root->initialise(false);
+}
 
 //
 //  FUNZIONE: MyRegisterClass()

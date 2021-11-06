@@ -43,3 +43,17 @@ void CWindow::OnVScroll(WPARAM wParam, LPARAM lParam)
 {
 
 }
+
+LONG CWindow::AltezzaFinestra() const
+{
+	RECT rettangoloFinestra;
+	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
+	return rettangoloFinestra.bottom - rettangoloFinestra.top;
+}
+
+LONG CWindow::LarghezzaFinestra() const
+{
+	RECT rettangoloFinestra;
+	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
+	return rettangoloFinestra.right - rettangoloFinestra.left;
+}

@@ -22,5 +22,7 @@ public:
 	{
 		m_HandleFinestra = handleFinestra;
 	}
+	LONG AltezzaFinestra() const;
+	LONG LarghezzaFinestra() const;
 };
 

@@ -113,5 +113,4 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 void CVisualizzatore3DDlg::CreaControlloOgre()
 {
 	m_pOgre = new COgreCtrl();
-	m_pOgre->POgreRoot()->createRenderWindow("Ogre", 200, 200, false, nullptr);
 }
