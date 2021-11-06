@@ -13,5 +13,5 @@ public:
 	COgreCtrl();
 	~COgreCtrl();
 	virtual void OnPaint();
-	void InizializzaControllo();
+	void InizializzaControllo(HWND parentHandle, RECT& dimensioni);
 };

@@ -58,6 +58,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             DispatchMessage(&msg);
         }
     }
+    g_Root->shutdown();
     delete g_Root;
     return (int) msg.wParam;
 }
@@ -66,7 +67,7 @@ void OgreSetup()
 {
     g_LogManager = new LogManager();
     g_Log = g_LogManager->getSingleton().createLog("Ogre.log",true, true, false);
-    g_Root = new Root(".\\plugins.cfg", String(), "Ogre.log");
+    g_Root = new Root("plugins.cfg", String(), "Ogre.log");
     RenderSystemList renderers = g_Root->getAvailableRenderers();
     RenderSystemList::iterator it = renderers.begin();
     RenderSystem* renderer = nullptr;
@@ -85,7 +86,6 @@ void OgreSetup()
     {
         renderer->setConfigOption("Full Screen", "No");
         renderer->setConfigOption("VSync", "Yes");
-        renderer->setConfigOption("Anti aliasing", "No");
     }
     if (!g_Root->restoreConfig())
         g_Root->showConfigDialog(nullptr);

@@ -14,6 +14,7 @@ protected:
 	COgreCtrl* m_pOgre;
 public:
 	CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa);
+	~CVisualizzatore3DDlg();
 	virtual void CreaDialog(HWND parent);
 protected:
 	virtual void CreaControlliDaRisorse();

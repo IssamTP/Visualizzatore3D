@@ -15,11 +15,14 @@ COgreCtrl::~COgreCtrl()
 {
 }
 
-void COgreCtrl::InizializzaControllo()
+void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
 {
+    unsigned int altezza = static_cast<unsigned int>(dimensioni.bottom - dimensioni.top);
+    unsigned int larghezza = static_cast<unsigned int>(dimensioni.right - dimensioni.left);
     Ogre::NameValuePairList miscParams;
-    miscParams["parentWindowHandle"] = Ogre::StringConverter::toString((ULONG)m_HandleFinestra);
-    g_Root->createRenderWindow("renderwin", static_cast<unsigned int>(LarghezzaFinestra()), static_cast<unsigned int>(AltezzaFinestra()), false, &miscParams);
+    miscParams["parentWindowHandle"] = Ogre::StringConverter::toString((ULONG)parentHandle);
+    m_pRenderWindow = g_Root->createRenderWindow("renderwin", larghezza, altezza, false, &miscParams);
+    m_pRenderWindow->setVisible(true);
     /*
         if (m_pRenderWindow != nullptr)
         {

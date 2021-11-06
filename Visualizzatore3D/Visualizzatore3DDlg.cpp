@@ -8,6 +8,13 @@ CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
 	m_HSlider = nullptr;
 	m_Texture = nullptr;
 	m_VSlider = nullptr;
+	m_pOgre = nullptr;
+}
+
+CVisualizzatore3DDlg::~CVisualizzatore3DDlg()
+{
+	//if (m_pOgre != nullptr)
+	//	delete m_pOgre;
 }
 
 void CVisualizzatore3DDlg::CreaControlliDaRisorse()
@@ -112,5 +119,10 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 
 void CVisualizzatore3DDlg::CreaControlloOgre()
 {
+	HWND segnaposto = GetDlgItem(m_HandleFinestra, IDC_SEGNAPOSTO_OGRE);
+	RECT dimensioni;
+	GetWindowRect(segnaposto, &dimensioni);
 	m_pOgre = new COgreCtrl();
+	m_pOgre->InizializzaControllo(segnaposto, dimensioni);
+	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SEGNAPOSTO_OGRE, m_pOgre));
 }
