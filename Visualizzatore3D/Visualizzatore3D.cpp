@@ -49,9 +49,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     MSG msg;
     visualizzatore3D.MostraFinestra(SW_SHOW);
+    visualizzatore3D.AggiornaFinestra();
     // Ciclo di messaggi principale:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
+        g_Root->renderOneFrame();
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg) && IsDialogMessage(visualizzatore3D.HandleFinestra(), &msg) == TRUE)
         {
             TranslateMessage(&msg);

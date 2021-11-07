@@ -17,10 +17,15 @@ public:
 	{
 		return m_DisegnoAutonomo;
 	}
+	void AggiornaFinestra();
 	void MostraMessaggioDiErrore();
 	inline void SetHandleFinestra(HWND handleFinestra)
 	{
 		m_HandleFinestra = handleFinestra;
+	}
+	inline HWND HandleFinestra()
+	{
+		return m_HandleFinestra;
 	}
 	LONG AltezzaFinestra() const;
 	LONG LarghezzaFinestra() const;

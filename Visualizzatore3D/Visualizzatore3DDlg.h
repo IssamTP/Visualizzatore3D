@@ -11,6 +11,7 @@ protected:
 	CSliderCtrl* m_HSlider;
 	CSliderCtrl* m_VSlider;
 	CListCtrl* m_Texture;
+	CWindow* m_Segnaposto;
 	COgreCtrl* m_pOgre;
 public:
 	CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa);

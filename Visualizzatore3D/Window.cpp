@@ -8,6 +8,11 @@ CWindow::CWindow()
 	m_HandleFinestra = nullptr;
 }
 
+void CWindow::AggiornaFinestra()
+{
+	UpdateWindow(m_HandleFinestra);
+}
+
 void CWindow::MostraMessaggioDiErrore()
 {
 	DWORD ultimoErrore = GetLastError();

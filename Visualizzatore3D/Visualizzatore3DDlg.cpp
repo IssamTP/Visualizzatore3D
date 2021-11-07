@@ -35,6 +35,10 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_LIST1));
 	m_Texture = reinterpret_cast<CListCtrl*>(controllo->second);
 	m_Texture->AggiungiElemento(_T("Texture_1"), true);
+
+	controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SEGNAPOSTO_OGRE, new CWindow()));
+	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_SEGNAPOSTO_OGRE));
+	m_Segnaposto = reinterpret_cast<CWindow*>(controllo->second);
 }
 
 void CVisualizzatore3DDlg::CreaDialog(HWND parent)
@@ -119,10 +123,9 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 
 void CVisualizzatore3DDlg::CreaControlloOgre()
 {
-	HWND segnaposto = GetDlgItem(m_HandleFinestra, IDC_SEGNAPOSTO_OGRE);
 	RECT dimensioni;
-	GetWindowRect(segnaposto, &dimensioni);
+	GetWindowRect(m_Segnaposto->HandleFinestra(), &dimensioni);
 	m_pOgre = new COgreCtrl();
-	m_pOgre->InizializzaControllo(segnaposto, dimensioni);
-	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SEGNAPOSTO_OGRE, m_pOgre));
+	m_pOgre->InizializzaControllo(m_Segnaposto->HandleFinestra(), dimensioni);
+	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_CONTROLLO_OGRE, m_pOgre));
 }
