@@ -45,6 +45,9 @@
     <ClInclude Include="OgreCtrl.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Visualizzatore3D.cpp">

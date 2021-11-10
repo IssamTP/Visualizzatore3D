@@ -1,5 +1,8 @@
 #include "Visualizzatore3D.h"
+#include "stdafx.h"
 #include "OgreCtrl.h"
+
+OgreApplication OgreApp;
 
 COgreCtrl::COgreCtrl()
 	: CWindow()
@@ -15,49 +18,113 @@ COgreCtrl::~COgreCtrl()
 {
 }
 
+Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::String matName)
+{
+
+    Ogre::ManualObject* cube = new Ogre::ManualObject(name);
+    cube->begin(matName);
+    cube->position(0.5, -0.5, 1.0); cube->normal(0.408248, -0.816497, 0.408248); cube->textureCoord(1, 0);
+    cube->position(-0.5, -0.5, 0.0); cube->normal(-0.408248, -0.816497, -0.408248); cube->textureCoord(0, 1);
+    cube->position(0.5, -0.5, 0.0); cube->normal(0.666667, -0.333333, -0.666667); cube->textureCoord(1, 1);
+    cube->position(-0.5, -0.5, 1.0); cube->normal(-0.666667, -0.333333, 0.666667); cube->textureCoord(0, 0);
+    cube->position(0.5, 0.5, 1.0); cube->normal(0.666667, 0.333333, 0.666667); cube->textureCoord(1, 0);
+    cube->position(-0.5, -0.5, 1.0); cube->normal(-0.666667, -0.333333, 0.666667); cube->textureCoord(0, 1);
+    cube->position(0.5, -0.5, 1.0); cube->normal(0.408248, -0.816497, 0.408248); cube->textureCoord(1, 1);
+    cube->position(-0.5, 0.5, 1.0); cube->normal(-0.408248, 0.816497, 0.408248); cube->textureCoord(0, 0);
+    cube->position(-0.5, 0.5, 0.0); cube->normal(-0.666667, 0.333333, -0.666667); cube->textureCoord(0, 1);
+    cube->position(-0.5, -0.5, 0.0); cube->normal(-0.408248, -0.816497, -0.408248); cube->textureCoord(1, 1);
+    cube->position(-0.5, -0.5, 1.0); cube->normal(-0.666667, -0.333333, 0.666667); cube->textureCoord(1, 0);
+    cube->position(0.5, -0.5, 0.0); cube->normal(0.666667, -0.333333, -0.666667); cube->textureCoord(0, 1);
+    cube->position(0.5, 0.5, 0.0); cube->normal(0.408248, 0.816497, -0.408248); cube->textureCoord(1, 1);
+    cube->position(0.5, -0.5, 1.0); cube->normal(0.408248, -0.816497, 0.408248); cube->textureCoord(0, 0);
+    cube->position(0.5, -0.5, 0.0); cube->normal(0.666667, -0.333333, -0.666667); cube->textureCoord(1, 0);
+    cube->position(-0.5, -0.5, 0.0); cube->normal(-0.408248, -0.816497, -0.408248); cube->textureCoord(0, 0);
+    cube->position(-0.5, 0.5, 1.0); cube->normal(-0.408248, 0.816497, 0.408248); cube->textureCoord(1, 0);
+    cube->position(0.5, 0.5, 0.0); cube->normal(0.408248, 0.816497, -0.408248); cube->textureCoord(0, 1);
+    cube->position(-0.5, 0.5, 0.0); cube->normal(-0.666667, 0.333333, -0.666667); cube->textureCoord(1, 1);
+    cube->position(0.5, 0.5, 1.0); cube->normal(0.666667, 0.333333, 0.666667); cube->textureCoord(0, 0);
+    cube->triangle(0, 1, 2);		cube->triangle(3, 1, 0);
+    cube->triangle(4, 5, 6);		cube->triangle(4, 7, 5);
+    cube->triangle(8, 9, 10);		cube->triangle(10, 7, 8);
+    cube->triangle(4, 11, 12);	cube->triangle(4, 13, 11);
+    cube->triangle(14, 8, 12);	cube->triangle(14, 15, 8);
+    cube->triangle(16, 17, 18);	cube->triangle(16, 19, 17);
+    cube->end();
+
+    return cube;
+}
+
+void COgreCtrl::CaricaMateriale()
+{
+    Ogre::MaterialManager* manager = Ogre::MaterialManager::getSingletonPtr();
+    Ogre::ResourcePtr materiale = manager->load("MaterialeDiProva", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true);
+}
+
+Ogre::ResourcePtr COgreCtrl::CaricaMesh()
+{
+    Ogre::ResourceGroupManager& manager = Ogre::ResourceGroupManager::getSingleton();
+    Ogre::StringVector gruppi = manager.getResourceGroups();
+    for (auto gruppo = gruppi.begin(); gruppo != gruppi.end(); gruppo++)
+    {
+        if (gruppo->compare("Mesh") == 0)
+        {
+            auto resLoc = manager.findResourceLocation("Mesh", "*");
+            if (resLoc->size() > 0)
+            {
+                Ogre::String meshLoc = *resLoc->begin();
+                Ogre::MeshManager& meshManager = Ogre::MeshManager::getSingleton();
+                auto resources = meshManager.getResourceIterator();
+                auto resourceIterator = resources.begin();
+                while (resourceIterator != resources.end())
+                {
+                    Ogre::String nomeRisorsa = resourceIterator->second->getName();
+                    if (nomeRisorsa.compare("ogrehead") == 0 || nomeRisorsa.compare("Prefab_Cube") == 0)
+                        return resourceIterator->second;
+                    else
+                        resourceIterator++;
+                }
+            }
+        }
+    }
+    return nullptr;
+}
+
 void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
 {
     unsigned int altezza = static_cast<unsigned int>(dimensioni.bottom - dimensioni.top);
     unsigned int larghezza = static_cast<unsigned int>(dimensioni.right - dimensioni.left);
     Ogre::NameValuePairList miscParams;
     miscParams["parentWindowHandle"] = Ogre::StringConverter::toString((UINT)(parentHandle));
-    m_pRenderWindow = g_Root->createRenderWindow("renderctrl", larghezza, altezza, false, &miscParams);
+    m_pRenderWindow = OgreApp.m_Root->createRenderWindow("renderctrl", larghezza, altezza, false, &miscParams);
     m_pRenderWindow->setVisible(true);
-    if (m_pRenderWindow != nullptr)
+    m_pSceneManager = OgreApp.CreateSceneManager();
+    if (m_pRenderWindow != nullptr && m_pSceneManager != nullptr)
     {
-        // Create a generic scene manager as we won't do anything too fancy
-        if (m_pSceneManager!= nullptr)
+        m_pSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+        Ogre::Light* light = m_pSceneManager->createLight("IlluminazionePrincipale");
+        Ogre::SceneNode* lightNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+        lightNode->attachObject(light);
+        lightNode->setPosition(20, 80, 50);
+        Ogre::SceneNode* camNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+        m_pCamera = m_pSceneManager->createCamera("CameraPrincipale");
+        m_pCamera->setNearClipDistance(5);
+        m_pCamera->setAutoAspectRatio(true);
+        camNode->attachObject(m_pCamera);
+        camNode->setPosition(0, 0, 140);
+        m_pRenderWindow->addViewport(m_pCamera);
+
+        Ogre::SceneNode* ogreNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+        Ogre::ResourcePtr resourceMesh = CaricaMesh();
+        if (resourceMesh != nullptr)
         {
-            // Create camera
-            m_pCamera = m_pSceneManager->createCamera("PhyCoCam");
-            if (m_pCamera != nullptr)
-            {
-                m_pCamera->setNearClipDistance(1.0);
-                m_pCamera->setFarClipDistance(500000.0);
-
-                // Create viewport
-                m_pViewport = m_pRenderWindow->addViewport(m_pCamera);
-                if (NULL != m_pViewport)
-                {
-                    m_pViewport->setBackgroundColour(Ogre::ColourValue(0.0, 0.0, 0.0));
-                    m_pViewport->setClearEveryFrame(true);
-
-                    // Create light source
-                    Ogre::Light* pLight = m_pSceneManager->createLight("PhyCoLight");
-                    if (pLight != nullptr)
-                    {
-                        pLight->setDiffuseColour(1.0, 1.0, 1.0);
-                        pLight->setType(Ogre::Light::LT_POINT);
-                        Ogre::SceneNode* pLightNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode("PhyCoLightNode");
-                        pLightNode->attachObject(pLight);
-                        pLightNode->setVisible(true);
-                        pLight->setVisible(true);
-                    }
-                }
-            }
+            //Ogre::MeshPtr mesh = Ogre::MeshPtr(resourceMesh);
+            ogreNode->attachObject(m_pSceneManager->createEntity("Cubo", Ogre::SceneManager::PrefabType::PT_CUBE));
         }
-
-        // activate render window and post a single update
+        else
+        {
+            CaricaMateriale();
+            ogreNode->attachObject(DisegnaCubo("CuboTest", "MaterialeDiProva"));
+        }
         m_pRenderWindow->setActive(true);
         m_pRenderWindow->update();
     }

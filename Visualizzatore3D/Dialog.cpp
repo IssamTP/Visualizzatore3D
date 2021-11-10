@@ -1,4 +1,4 @@
-#include "framework.h"
+#include "stdafx.h"
 #include "Dialog.h"
 
 CDialog* g_Finestra = nullptr;

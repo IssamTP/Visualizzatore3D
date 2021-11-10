@@ -1,4 +1,4 @@
-#include "framework.h"
+#include "stdafx.h"
 #include "Visualizzatore3D.h"
 #include "Visualizzatore3DDlg.h"
 
