@@ -1,8 +1,6 @@
-#include "Visualizzatore3D.h"
 #include "stdafx.h"
+#include "Visualizzatore3D.h"
 #include "OgreCtrl.h"
-
-OgreApplication OgreApp;
 
 COgreCtrl::COgreCtrl()
 	: CWindow()
@@ -18,11 +16,10 @@ COgreCtrl::~COgreCtrl()
 {
 }
 
-Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::String matName)
+Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::ResourcePtr risorsa)
 {
-
     Ogre::ManualObject* cube = new Ogre::ManualObject(name);
-    cube->begin(matName);
+    cube->begin(Ogre::MaterialManager::getSingleton().getByName("OldMovie"));
     cube->position(0.5, -0.5, 1.0); cube->normal(0.408248, -0.816497, 0.408248); cube->textureCoord(1, 0);
     cube->position(-0.5, -0.5, 0.0); cube->normal(-0.408248, -0.816497, -0.408248); cube->textureCoord(0, 1);
     cube->position(0.5, -0.5, 0.0); cube->normal(0.666667, -0.333333, -0.666667); cube->textureCoord(1, 1);
@@ -54,10 +51,10 @@ Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::String matNa
     return cube;
 }
 
-void COgreCtrl::CaricaMateriale()
+Ogre::ResourcePtr COgreCtrl::CaricaMateriale()
 {
     Ogre::MaterialManager* manager = Ogre::MaterialManager::getSingletonPtr();
-    Ogre::ResourcePtr materiale = manager->load("MaterialeDiProva", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true);
+    return manager->load("OldMovie", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true);
 }
 
 Ogre::ResourcePtr COgreCtrl::CaricaMesh()
@@ -110,27 +107,24 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
         m_pCamera->setNearClipDistance(5);
         m_pCamera->setAutoAspectRatio(true);
         camNode->attachObject(m_pCamera);
-        camNode->setPosition(0, 0, 140);
+        camNode->setPosition(0, 0, 10);
         m_pRenderWindow->addViewport(m_pCamera);
 
         Ogre::SceneNode* ogreNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
-        Ogre::ResourcePtr resourceMesh = CaricaMesh();
+        Ogre::ResourcePtr resourceMesh = nullptr; // CaricaMesh();
         if (resourceMesh != nullptr)
         {
             //Ogre::MeshPtr mesh = Ogre::MeshPtr(resourceMesh);
-            ogreNode->attachObject(m_pSceneManager->createEntity("Cubo", Ogre::SceneManager::PrefabType::PT_CUBE));
+            //ogreNode->attachObject(m_pSceneManager->createEntity("Cubo", Ogre::SceneManager::PrefabType::PT_CUBE));
         }
         else
         {
-            CaricaMateriale();
-            ogreNode->attachObject(DisegnaCubo("CuboTest", "MaterialeDiProva"));
+            ogreNode->attachObject(DisegnaCubo("CuboTest", CaricaMateriale()));
         }
         m_pRenderWindow->setActive(true);
-        m_pRenderWindow->update();
     }
 }
 
 void COgreCtrl::OnPaint()
 {
-    Ogre::Root::getSingleton().renderOneFrame();
 }

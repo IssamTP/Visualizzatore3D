@@ -13,9 +13,9 @@ public:
 	COgreCtrl();
 	~COgreCtrl();
 	virtual void OnPaint();
-	void CaricaMateriale();
+	Ogre::ResourcePtr CaricaMateriale();
 	Ogre::ResourcePtr CaricaMesh();
 	void InizializzaControllo(HWND parentHandle, RECT& dimensioni);
 protected:
-	Ogre::ManualObject* DisegnaCubo(Ogre::String name, Ogre::String matName);
+	Ogre::ManualObject* DisegnaCubo(Ogre::String name, Ogre::ResourcePtr matName);
 };

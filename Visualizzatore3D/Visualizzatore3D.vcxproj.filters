@@ -48,6 +48,12 @@
     <ClInclude Include="stdafx.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="OgreFramework.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreApplication.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Visualizzatore3D.cpp">
@@ -69,6 +75,12 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="OgreCtrl.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="OgreApplication.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
