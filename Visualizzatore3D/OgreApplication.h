@@ -1,6 +1,8 @@
 #pragma once
 
 using namespace Ogre;
+using namespace OgreBites;
+using namespace Ogre::RTShader;
 
 class OgreApplication
 {
@@ -11,8 +13,8 @@ protected:
     FileSystemLayer* m_FSLayer;
     Log* m_Log;
     LogManager* m_LogManager;
-    //Ogre::RTShader::ShaderGenerator* m_ShaderGenerator;
-    //OgreBites::SGTechniqueResolverListener* m_MaterialMgrListener;
+    //ShaderGenerator* m_ShaderGenerator;
+    //SGTechniqueResolverListener* m_MaterialMgrListener;
 public:
     Root* m_Root;
 public:

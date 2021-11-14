@@ -2,18 +2,11 @@
 #include "Visualizzatore3D.h"
 #include "Visualizzatore3DDlg.h"
 
-#define MAX_LOADSTRING 100
-
 // Variabili globali:
 HINSTANCE hInst;                                // istanza corrente
 
-WCHAR szTitle[MAX_LOADSTRING];                  // Testo della barra del titolo
-WCHAR szWindowClass[MAX_LOADSTRING];            // nome della classe della finestra principale
-
 // Dichiarazioni con prototipo di funzioni incluse in questo modulo di codice:
-ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -26,12 +19,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     CVisualizzatore3DDlg visualizzatore3D(hInstance, IDD_VISUALIZZATORE3D);
     visualizzatore3D.CreaDialog(nullptr);
 
-    // Inizializzare le stringhe globali
-    LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadString(hInstance, IDC_VISUALIZZATORE3D, szWindowClass, MAX_LOADSTRING);
-
-
-    //MyRegisterClass(hInstance);
+    //CWindow finestraProgramma;
+    // 
+    // finestraProgramma.RegistraFinestra();
     // Eseguire l'inizializzazione dall'applicazione:
     //if (!InitInstance (hInstance, nCmdShow))
     //{
@@ -55,32 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     }
     OgreApp.m_Root->shutdown();
     return (int)msg.wParam;
-}
-
-//
-//  FUNZIONE: MyRegisterClass()
-//
-//  SCOPO: Registra la classe di finestre.
-//
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-    WNDCLASSEXW wcex;
-
-    wcex.cbSize = sizeof(WNDCLASSEX);
-
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_VISUALIZZATORE3D));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_VISUALIZZATORE3D);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-
-    return RegisterClassExW(&wcex);
 }
 
 //

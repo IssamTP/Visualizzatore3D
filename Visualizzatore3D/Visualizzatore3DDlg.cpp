@@ -3,7 +3,7 @@
 #include "Visualizzatore3DDlg.h"
 
 CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
-	: CDialog(istanza, idRisorsa)
+	: CDialog(istanza, IDC_VISUALIZZATORE3D, idRisorsa)
 {
 	m_HSlider = nullptr;
 	m_Texture = nullptr;

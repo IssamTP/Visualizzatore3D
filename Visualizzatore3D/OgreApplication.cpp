@@ -96,17 +96,17 @@ void OgreApplication::InizializzaRoot()
 
 void OgreApplication::InizializzaShader()
 {
-    /*if (Ogre::RTShader::ShaderGenerator::initialize() && false)
-    {
-        m_ShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-        m_ShaderGenerator->setShaderCachePath("");
-        // Create and register the material manager listener if it doesn't exist yet.
-        if (m_MaterialMgrListener == nullptr)
-        {
-            m_MaterialMgrListener = new OgreBites::SGTechniqueResolverListener(m_ShaderGenerator);
-            Ogre::MaterialManager::getSingleton().addListener(m_MaterialMgrListener);
-        }
-    }*/
+    //if (Ogre::RTShader::ShaderGenerator::initialize() && false)
+    //{
+    //    m_ShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+    //    m_ShaderGenerator->setShaderCachePath("");
+    //    // Create and register the material manager listener if it doesn't exist yet.
+    //    if (m_MaterialMgrListener == nullptr)
+    //    {
+    //        m_MaterialMgrListener = new OgreBites::SGTechniqueResolverListener(m_ShaderGenerator);
+    //        Ogre::MaterialManager::getSingleton().addListener(m_MaterialMgrListener);
+    //    }
+    //}
 }
 
 void OgreApplication::Setup()
