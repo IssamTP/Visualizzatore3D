@@ -34,13 +34,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     visualizzatore3D.MostraFinestra(SW_SHOW);
     visualizzatore3D.AggiornaFinestra();
     // Ciclo di messaggi principale:
-    OgreApp.m_Root->startRendering();
+    //OgreApp.m_Root->startRendering();
+    OgreApp.m_Root->renderOneFrame();
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg) && IsDialogMessage(visualizzatore3D.HandleFinestra(), &msg) == TRUE)
+        if (IsDialogMessage(visualizzatore3D.HandleFinestra(), &msg) == FALSE)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
     }
     OgreApp.m_Root->shutdown();

@@ -214,7 +214,7 @@ LONG CWindow::LarghezzaFinestra() const
 /// <param name="wParam"></param>
 /// <param name="lParam"></param>
 /// <returns></returns>
-INT_PTR CALLBACK CWindow::ProceduraFinestra(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK CWindow::WndProc(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
 {
 	CWindow* finestraDiRiferimento = nullptr;
 	if (messaggio == WM_NCCREATE)

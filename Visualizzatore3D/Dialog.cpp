@@ -30,9 +30,10 @@ INT_PTR CDialog::ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARA
 	INT_PTR messaggioGestito = FALSE;
 	switch (messaggio)
 	{
-	case WM_CREATE:
 	default:
-		messaggioGestito = DefDlgProc(hWnd, messaggio, wParam, lParam);
+		// messaggioGestito = DefDlgProc(hWnd, messaggio, wParam, lParam);
+		break;
+	case WM_CREATE:
 		break;
 	case WM_VSCROLL:
 		OnVScroll(wParam, lParam);

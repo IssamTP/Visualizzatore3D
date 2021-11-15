@@ -120,6 +120,8 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
         else
         {
             ogreNode->attachObject(DisegnaCubo("CuboTest", CaricaMateriale()));
+            ManualObject* cubo = reinterpret_cast<ManualObject *>(ogreNode->getAttachedObject("CuboTest"));
+            // set initial rotation = 0 [-180°, +180°]
         }
         m_pRenderWindow->setActive(true);
     }
@@ -127,4 +129,5 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
 
 void COgreCtrl::OnPaint()
 {
+    OgreApp.m_Root->renderOneFrame();
 }

@@ -10,6 +10,8 @@
 	#include <map>
 	#include <vector>
 	#include <string>
+	#define _USE_MATH_DEFINES
+	#include <cmath>
 	#include <stdlib.h>
 	#include <malloc.h>
 	#include <memory.h>
