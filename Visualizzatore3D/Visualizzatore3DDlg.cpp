@@ -13,8 +13,6 @@ CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
 
 CVisualizzatore3DDlg::~CVisualizzatore3DDlg()
 {
-	//if (m_pOgre != nullptr)
-	//	delete m_pOgre;
 }
 
 void CVisualizzatore3DDlg::CreaControlliDaRisorse()
@@ -117,6 +115,7 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 			posizione = HIWORD(wParam);
 			if (m_pOgre != nullptr)
 				m_pOgre->ImpostaRotazione(posizione - 180, 1);
+			SetDlgItemText(m_HandleFinestra, IDC_HROT, std::to_wstring(posizione).append(L"°").c_str());
 			break;
 		case TB_TOP: // The user pressed the HOME key(VK_HOME).
 			break;

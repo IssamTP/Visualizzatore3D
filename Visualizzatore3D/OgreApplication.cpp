@@ -3,9 +3,8 @@
 
 OgreApplication::OgreApplication()
 {
-    m_LogManager = new Ogre::LogManager();
-    m_Log = m_LogManager->getSingleton().createLog("Ogre.log", true, true, false);
-    m_FSLayer = new Ogre::FileSystemLayer("Visualizzatore3D");
+    m_Log = m_LogManager.getSingleton().createLog("Ogre.log", true, true, false);
+    m_FSLayer = OGRE_NEW Ogre::FileSystemLayer("Visualizzatore3D");
     InizializzaRoot();
     CaricaRisorse();
     InizializzaShader();
@@ -14,8 +13,8 @@ OgreApplication::OgreApplication()
 
 OgreApplication::~OgreApplication()
 {
-    delete m_LogManager;
-    delete m_Root;
+    OGRE_DELETE m_FSLayer;
+    OGRE_DELETE m_Root;
 }
 
 void OgreApplication::Log(Ogre::String& messaggio)

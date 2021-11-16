@@ -12,7 +12,7 @@ class OgreApplication
 protected:
     FileSystemLayer* m_FSLayer;
     Log* m_Log;
-    LogManager* m_LogManager;
+    LogManager m_LogManager;
     //ShaderGenerator* m_ShaderGenerator;
     //SGTechniqueResolverListener* m_MaterialMgrListener;
 public:
