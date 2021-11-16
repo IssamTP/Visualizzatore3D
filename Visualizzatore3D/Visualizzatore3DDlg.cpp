@@ -69,6 +69,8 @@ void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 		case  TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
 		case TB_THUMBTRACK: // The user dragged the slider.
 			posizione = HIWORD(wParam);
+			if (m_pOgre != nullptr)
+				m_pOgre->ImpostaRotazione(posizione - 180, 0u);
 			SetDlgItemText(m_HandleFinestra, IDC_HROT, std::to_wstring(posizione).append(L"°").c_str());
 			break;
 		case TB_TOP: // The user pressed the HOME key(VK_HOME).
@@ -94,7 +96,7 @@ void CVisualizzatore3DDlg::OnNotify(LPNMHDR pNMHDR)
 void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 {
 	int posizione;
-	if (m_HSlider != nullptr)
+	if (m_VSlider != nullptr)
 	{
 		switch (LOWORD(wParam))
 		{
@@ -113,7 +115,8 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 		case  TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
 		case TB_THUMBTRACK: // The user dragged the slider.
 			posizione = HIWORD(wParam);
-			SetDlgItemText(m_HandleFinestra, IDC_VROT, std::to_wstring(posizione).append(L"°").c_str());
+			if (m_pOgre != nullptr)
+				m_pOgre->ImpostaRotazione(posizione - 180, 1);
 			break;
 		case TB_TOP: // The user pressed the HOME key(VK_HOME).
 			break;

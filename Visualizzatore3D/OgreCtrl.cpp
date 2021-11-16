@@ -86,6 +86,26 @@ Ogre::ResourcePtr COgreCtrl::CaricaMesh()
     return nullptr;
 }
 
+void COgreCtrl::ImpostaRotazione(int angoloSessagesimale, unsigned short asse)
+{
+    constexpr Real degARad = M_PI / 180.0F;
+    m_Rotazione = angoloSessagesimale * degARad;
+    if (m_pSceneManager != nullptr)
+    {
+        Ogre::SceneNode* nodoOgre = dynamic_cast<SceneNode*>(m_pSceneManager->getRootSceneNode()->getChild("NodoCubo"));
+        switch (asse)
+        {
+        case 0:
+            nodoOgre->rotate(Vector3::UNIT_Z, m_Rotazione);
+            break;
+        case 1:
+            nodoOgre->rotate(Vector3::UNIT_X, m_Rotazione);
+            break;
+        }
+        m_pRenderWindow->update();
+    }
+}
+
 void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
 {
     unsigned int altezza = static_cast<unsigned int>(dimensioni.bottom - dimensioni.top);
@@ -110,7 +130,7 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
         camNode->setPosition(0, 0, 10);
         m_pRenderWindow->addViewport(m_pCamera);
 
-        Ogre::SceneNode* ogreNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+        Ogre::SceneNode* ogreNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode("NodoCubo");
         Ogre::ResourcePtr resourceMesh = nullptr; // CaricaMesh();
         if (resourceMesh != nullptr)
         {
@@ -121,6 +141,7 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
         {
             ogreNode->attachObject(DisegnaCubo("CuboTest", CaricaMateriale()));
             ManualObject* cubo = reinterpret_cast<ManualObject *>(ogreNode->getAttachedObject("CuboTest"));
+            ogreNode->rotate(Vector3::UNIT_Z, Radian(0.0));
             // set initial rotation = 0 [-180°, +180°]
         }
         m_pRenderWindow->setActive(true);
