@@ -4,6 +4,8 @@
 
 	#include <Ogre.h>
 	#include <OgreFileSystemLayer.h>
+	#include <Bites/OgreBitesConfigDialog.h>
+	#include <Bites/OgreStaticPluginLoader.h>
 	#include <Bites/OgreSGTechniqueResolverListener.h>
 	#include <RTShaderSystem/OgreShaderGenerator.h>
 #endif

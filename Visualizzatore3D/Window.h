@@ -20,7 +20,7 @@ public:
 	CWindow();
 	CWindow(HINSTANCE istanza, UINT idRisorsaNomeFinestra, HWND proprietaria);
 	CWindow(HINSTANCE istanza, UINT idRisorsaNomeClasse, UINT idRisorsaNomeFinestra, HWND proprietaria);
-	virtual void OnNotify(LPNMHDR pNMHDR);
+	virtual void OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
 	virtual void OnHScroll(WPARAM wParam, LPARAM lParam);
 	virtual void OnPaint();
 	virtual void OnVScroll(WPARAM wParam, LPARAM lParam);

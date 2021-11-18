@@ -13,6 +13,12 @@ CListCtrl::~CListCtrl()
         delete[] elemento->pszText;
 }
 
+void CListCtrl::GetElemento(LVITEM& elemento)
+{
+    if (0 <= elemento.iItem && elemento.iItem < m_Elementi.size())
+        memcpy(&elemento, &m_Elementi[elemento.iItem], sizeof(LVITEM));
+}
+
 unsigned int CListCtrl::GetNumeroElementi() const
 {
     return static_cast<unsigned int>(ListView_GetItemCount(m_HandleFinestra));

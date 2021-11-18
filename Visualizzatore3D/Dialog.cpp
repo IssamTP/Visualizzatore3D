@@ -54,7 +54,7 @@ INT_PTR CDialog::ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARA
 		PostQuitMessage(EXIT_SUCCESS);
 		break;
 	case WM_NOTIFY:
-		OnNotify(reinterpret_cast<LPNMHDR>(lParam));
+		OnNotify(hWnd, messaggio, wParam, lParam);
 		break;
 	}
 	return messaggioGestito;

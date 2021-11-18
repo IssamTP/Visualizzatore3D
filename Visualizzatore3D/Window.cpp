@@ -99,7 +99,7 @@ void CWindow::RegistraFinestra()
 	m_RisultatoRegistrazione = RegisterClassEx(&m_InformazioniFinestra);
 }
 
-void CWindow::OnNotify(LPNMHDR pNMHDR)
+void CWindow::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
 {
 
 }
@@ -183,7 +183,7 @@ INT_PTR CWindow::ProceduraFinestra(HWND hWnd, UINT messaggio, WPARAM wParam, LPA
 		PostQuitMessage(EXIT_SUCCESS);
 		break;
 	case WM_NOTIFY:
-		OnNotify(reinterpret_cast<LPNMHDR>(lParam));
+		OnNotify(hWnd, messaggio, wParam, lParam);
 		break;
 	}
 	return messaggioGestito;

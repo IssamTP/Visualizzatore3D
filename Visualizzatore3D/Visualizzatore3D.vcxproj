@@ -124,7 +124,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;E:\Sviluppo\OGRE\13.1.0\lib\OgreMain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ComCtl32.lib;E:\Sviluppo\OGRE\13.1.0\lib\OgreMain_d.lib;E:\Sviluppo\OGRE\13.1.0\lib\OgreBites_d.lib;E:\Sviluppo\OGRE\13.1.0\lib\OgreRTShaderSystem_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

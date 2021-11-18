@@ -13,8 +13,9 @@ protected:
     FileSystemLayer* m_FSLayer;
     Log* m_Log;
     LogManager m_LogManager;
-    //ShaderGenerator* m_ShaderGenerator;
-    //SGTechniqueResolverListener* m_MaterialMgrListener;
+    ShaderGenerator* m_ShaderGenerator;
+    StaticPluginLoader m_CaricatorePlugin;
+    SGTechniqueResolverListener* m_MaterialMgrListener;
 public:
     Root* m_Root;
 public:
@@ -24,6 +25,7 @@ public:
     SceneManager* CreateSceneManager();
 protected:
     void CaricaRisorse();
+    void InizializzaConfigurazioni();
     void InizializzaRoot();
     void InizializzaShader();
     void Setup();

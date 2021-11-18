@@ -20,7 +20,7 @@ public:
 protected:
 	virtual void CreaControlliDaRisorse();
 	virtual void OnHScroll(WPARAM wParam, LPARAM lParam);
-	virtual void OnNotify(LPNMHDR pNMHDR);
+	virtual void OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
 	virtual void OnVScroll(WPARAM wParam, LPARAM lParam);
 	virtual void CreaControlloOgre();
 };

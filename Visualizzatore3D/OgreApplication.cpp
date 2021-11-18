@@ -4,16 +4,15 @@
 OgreApplication::OgreApplication()
 {
     m_Log = m_LogManager.getSingleton().createLog("Ogre.log", true, true, false);
-    m_FSLayer = OGRE_NEW Ogre::FileSystemLayer("Visualizzatore3D");
+    InizializzaConfigurazioni();
     InizializzaRoot();
     CaricaRisorse();
-    InizializzaShader();
     Setup();
 }
 
 OgreApplication::~OgreApplication()
 {
-    OGRE_DELETE m_FSLayer;
+    delete m_FSLayer;
     OGRE_DELETE m_Root;
 }
 
@@ -25,7 +24,9 @@ void OgreApplication::Log(Ogre::String& messaggio)
 SceneManager* OgreApplication::CreateSceneManager()
 {
     Ogre::SceneManager* nuovaScena = m_Root->createSceneManager();
-    //m_ShaderGenerator->addSceneManager(nuovaScena);
+    if (m_ShaderGenerator == nullptr)
+        InizializzaShader();
+    m_ShaderGenerator->addSceneManager(nuovaScena);
     return nuovaScena;
 }
 
@@ -72,45 +73,61 @@ void OgreApplication::CaricaRisorse()
             rgm.addResourceLocation(arch, type, sec);
         }
     }
+    if (rgm.getResourceLocationList(Ogre::RGN_INTERNAL).empty())
+    {
+        const Ogre::String& mediaDir = "E:/Sviluppo/Visualizzatore3D/x64/Debug/Media";
+        // add default locations
+        rgm.addResourceLocation(mediaDir + "/Main", "FileSystem", Ogre::RGN_INTERNAL);
+        rgm.addResourceLocation(mediaDir + "/Terrain", "FileSystem", Ogre::RGN_INTERNAL);
+        rgm.addResourceLocation(mediaDir + "/RTShaderLib/GLSL", "FileSystem", Ogre::RGN_INTERNAL);
+        rgm.addResourceLocation(mediaDir + "/RTShaderLib/HLSL_Cg", "FileSystem", Ogre::RGN_INTERNAL);
+    }
+}
 
-    //        if (rgm.getResourceLocationList(Ogre::RGN_INTERNAL).empty())
-    //        {
-    //            const auto& mediaDir = getDefaultMediaDir();
-    //            // add default locations
-    //            rgm.addResourceLocation(mediaDir + "/Main", "FileSystem", Ogre::RGN_INTERNAL);
-    //#ifdef OGRE_BUILD_COMPONENT_TERRAIN
-    //            rgm.addResourceLocation(mediaDir + "/Terrain", "FileSystem", Ogre::RGN_INTERNAL);
-    //#endif
-    //#ifdef OGRE_BUILD_COMPONENT_RTSHADERSYSTEM
-    //            rgm.addResourceLocation(mediaDir + "/RTShaderLib/GLSL", "FileSystem", Ogre::RGN_INTERNAL);
-    //            rgm.addResourceLocation(mediaDir + "/RTShaderLib/HLSL_Cg", "FileSystem", Ogre::RGN_INTERNAL);
-    //#endif
-    //        }
+void OgreApplication::InizializzaConfigurazioni()
+{
+    TCHAR percorsoProgramma[_MAX_PATH];
+    m_FSLayer = new Ogre::FileSystemLayer("Visualizzatore3D");
+    GetModuleFileName(nullptr, percorsoProgramma, _MAX_PATH);
+    std::wstring conversione(percorsoProgramma);
+    conversione = conversione.substr(0, conversione.find_last_of(_T('\\')));
+    Ogre::String configDir = Ogre::StringUtil::standardisePath(std::string(conversione.begin(), conversione.end()).c_str());
+    m_FSLayer->setConfigPaths({ configDir });
 }
 
 void OgreApplication::InizializzaRoot()
 {
     m_Root = OGRE_NEW Ogre::Root(m_FSLayer->getConfigFilePath("plugins.cfg"), m_FSLayer->getWritablePath("ogre.cfg"), m_FSLayer->getWritablePath("ogre.log"));
+    if (m_Root->getInstalledPlugins().size() == 0)
+        m_CaricatorePlugin.load();
+    if (m_Root->getAvailableRenderers().empty())
+    {
+        Ogre::LogManager::getSingleton().logError("No RenderSystems available");
+        throw std::exception();
+    }
+    if (!m_Root->restoreConfig())
+        m_Root->showConfigDialog(OgreBites::getNativeConfigDialog());
+    m_Root->initialise(false);
 }
 
 void OgreApplication::InizializzaShader()
 {
-    //if (Ogre::RTShader::ShaderGenerator::initialize() && false)
-    //{
-    //    m_ShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-    //    m_ShaderGenerator->setShaderCachePath("");
-    //    // Create and register the material manager listener if it doesn't exist yet.
-    //    if (m_MaterialMgrListener == nullptr)
-    //    {
-    //        m_MaterialMgrListener = new OgreBites::SGTechniqueResolverListener(m_ShaderGenerator);
-    //        Ogre::MaterialManager::getSingleton().addListener(m_MaterialMgrListener);
-    //    }
-    //}
+#define RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+    if (ShaderGenerator::initialize())
+    {
+        m_ShaderGenerator = ShaderGenerator::getSingletonPtr();
+        m_ShaderGenerator->setShaderCachePath("");
+        // Create and register the material manager listener if it doesn't exist yet.
+        if (m_MaterialMgrListener == nullptr)
+        {
+            m_MaterialMgrListener = new OgreBites::SGTechniqueResolverListener(m_ShaderGenerator);
+            Ogre::MaterialManager::getSingleton().addListener(m_MaterialMgrListener);
+        }
+    }
 }
 
 void OgreApplication::Setup()
 {
-
     Ogre::RenderSystemList renderers = m_Root->getAvailableRenderers();
     Ogre::RenderSystemList::iterator it = renderers.begin();
     Ogre::RenderSystem* renderer = nullptr;
@@ -118,23 +135,13 @@ void OgreApplication::Setup()
     {
         renderer = *it;
         Ogre::String nome = renderer->getName();
-        if (renderer->getName().compare(C_DIRECT_3D9_RENDERER) == 0)
+        if (renderer->getName().compare(C_DIRECT_3D11_RENDERER) == 0)
         {
             m_Root->setRenderSystem(renderer);
             break;
         }
         ++it;
     }
-    renderer = m_Root->getRenderSystem();
-    if (renderer != nullptr)
-    {
-        renderer->setConfigOption("Full Screen", "No");
-        renderer->setConfigOption("VSync", "Yes");
-    }
-
-    if (!m_Root->restoreConfig())
-        m_Root->showConfigDialog(nullptr);
-    m_Root->initialise(false);
 }
 
 OgreApplication OgreApp;

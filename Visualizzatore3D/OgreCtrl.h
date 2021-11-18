@@ -13,9 +13,9 @@ protected:
 public:
 	COgreCtrl();
 	~COgreCtrl();
-	virtual void OnPaint();
 	Ogre::ResourcePtr CaricaMateriale();
 	Ogre::ResourcePtr CaricaMesh();
+	void ImpostaMateriale(Ogre::String nomeMateriale);
 	void ImpostaRotazione(int angoloSessagesimale, unsigned short asse);
 	void InizializzaControllo(HWND parentHandle, RECT& dimensioni);
 protected:

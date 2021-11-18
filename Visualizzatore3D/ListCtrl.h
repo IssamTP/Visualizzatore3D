@@ -9,6 +9,7 @@ protected:
 public:
 	CListCtrl();
 	~CListCtrl();
+	void GetElemento(LVITEM& elemento);
 	unsigned int GetNumeroElementi() const;
 	void AggiungiElemento(LPCTSTR descrizione, bool selezionato);
 	void DisplayInfoNotification(LV_DISPINFO* pDisplayInfo);

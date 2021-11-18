@@ -5,7 +5,7 @@
 COgreCtrl::COgreCtrl()
 	: CWindow()
 {
-    m_DisegnoAutonomo = true;
+    m_DisegnoAutonomo = false;
     m_pCamera = nullptr;
     m_pRenderWindow = nullptr;
     m_pSceneManager = nullptr;
@@ -86,6 +86,18 @@ Ogre::ResourcePtr COgreCtrl::CaricaMesh()
     return nullptr;
 }
 
+void COgreCtrl::ImpostaMateriale(Ogre::String nomeMateriale)
+{
+    Ogre::SceneNode* nodoOgre = dynamic_cast<SceneNode*>(m_pSceneManager->getRootSceneNode()->getChild("NodoCubo"));
+    Ogre::MovableObject* pMovableCube = nodoOgre->getAttachedObject("CuboTest");
+    Ogre::ManualObject* pCubo = dynamic_cast<ManualObject*>(pMovableCube);
+    MaterialPtr materiale = Ogre::MaterialManager::getSingleton().getByName(nomeMateriale);
+    auto sezioni = pCubo->getSections();
+    for (auto sezione = sezioni.begin(); sezione != sezioni.end(); sezione++)
+        (*sezione)->setMaterial(materiale);
+    m_pRenderWindow->update();
+}
+
 void COgreCtrl::ImpostaRotazione(int angoloSessagesimale, unsigned short asse)
 {
     constexpr Real degARad = M_PI / 180.0F;
@@ -145,10 +157,6 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
             // set initial rotation = 0 [-180°, +180°]
         }
         m_pRenderWindow->setActive(true);
+        m_pRenderWindow->update();
     }
-}
-
-void COgreCtrl::OnPaint()
-{
-    OgreApp.m_Root->renderOneFrame();
 }
