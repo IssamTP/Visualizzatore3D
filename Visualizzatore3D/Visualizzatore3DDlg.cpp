@@ -33,7 +33,7 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_LIST1));
 	m_Texture = reinterpret_cast<CListCtrl*>(controllo->second);
 	m_Texture->AggiungiElemento(_T("OldMovie"), true);
-	m_Texture->AggiungiElemento(_T("OgreMaterial"), false);
+	m_Texture->AggiungiElemento(_T("Ogre"), false);
 
 	controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SEGNAPOSTO_OGRE, new CWindow()));
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_SEGNAPOSTO_OGRE));
@@ -90,16 +90,16 @@ void CVisualizzatore3DDlg::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LP
 			{
 			case NM_CLICK:
 				NMITEMACTIVATE* pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-				LVITEM elemento;
-				memset(&elemento, 0, sizeof(LVITEM));
-				elemento.iItem = pNMItemActivate->iItem;
-				m_Texture->GetElemento(elemento);
-				std::wstring nomeMateriale(elemento.pszText);
-				m_pOgre->ImpostaMateriale(Ogre::String(nomeMateriale.begin(), nomeMateriale.end()));
+				if (0 <= pNMItemActivate->iItem && pNMItemActivate->iItem < 2)
+				{
+					LVITEM elemento;
+					memset(&elemento, 0, sizeof(LVITEM));
+					elemento.iItem = pNMItemActivate->iItem;
+					m_Texture->GetElemento(elemento);
+					std::wstring nomeMateriale(elemento.pszText);
+					m_pOgre->ImpostaMateriale(Ogre::String(nomeMateriale.begin(), nomeMateriale.end()));
+				}
 				break;
-			/*case LVN_GETDISPINFO:
-				m_Texture->DisplayInfoNotification(reinterpret_cast<LV_DISPINFO*>(pNMHDR));
-				break;*/
 			}
 		}
 		break;

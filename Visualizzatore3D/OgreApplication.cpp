@@ -12,8 +12,22 @@ OgreApplication::OgreApplication()
 
 OgreApplication::~OgreApplication()
 {
-    delete m_FSLayer;
+    Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);
+    if (m_MaterialMgrListener != nullptr)
+    {
+        Ogre::MaterialManager::getSingleton().removeListener(m_MaterialMgrListener);
+        delete m_MaterialMgrListener;
+        m_MaterialMgrListener = nullptr;
+    }
+    if (m_ShaderGenerator != nullptr)
+    {
+        Ogre::RTShader::ShaderGenerator::destroy();
+        m_ShaderGenerator = nullptr;
+    }
+    m_Root->saveConfig();
+    m_Root->shutdown();
     OGRE_DELETE m_Root;
+    delete m_FSLayer;
 }
 
 void OgreApplication::Log(Ogre::String& messaggio)
@@ -24,6 +38,7 @@ void OgreApplication::Log(Ogre::String& messaggio)
 SceneManager* OgreApplication::CreateSceneManager()
 {
     Ogre::SceneManager* nuovaScena = m_Root->createSceneManager();
+    m_SceneManager = nuovaScena;
     if (m_ShaderGenerator == nullptr)
         InizializzaShader();
     m_ShaderGenerator->addSceneManager(nuovaScena);

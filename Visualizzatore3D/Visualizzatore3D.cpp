@@ -47,7 +47,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             }
         }
     }
-    OgreApp.m_Root->shutdown();
     return (int)msg.wParam;
 }
 

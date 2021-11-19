@@ -13,6 +13,7 @@ protected:
     FileSystemLayer* m_FSLayer;
     Log* m_Log;
     LogManager m_LogManager;
+    SceneManager* m_SceneManager;
     ShaderGenerator* m_ShaderGenerator;
     StaticPluginLoader m_CaricatorePlugin;
     SGTechniqueResolverListener* m_MaterialMgrListener;

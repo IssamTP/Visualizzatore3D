@@ -19,7 +19,7 @@ COgreCtrl::~COgreCtrl()
 Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::ResourcePtr risorsa)
 {
     Ogre::ManualObject* cube = new Ogre::ManualObject(name);
-    cube->begin(Ogre::MaterialManager::getSingleton().getByName("OldMovie"));
+    cube->begin(Ogre::MaterialManager::getSingleton().getByName(risorsa->getName()));
     cube->position(0.5f, -0.5f, 1.0f); cube->normal(0.408248f, -0.816497f, 0.408248f); cube->textureCoord(1, 0);
     cube->position(-0.5f, -0.5f, 0.0f); cube->normal(-0.408248f, -0.816497f, -0.408248f); cube->textureCoord(0, 1);
     cube->position(0.5f, -0.5f, 0.0f); cube->normal(0.666667f, -0.333333f, -0.666667f); cube->textureCoord(1, 1);
@@ -47,14 +47,16 @@ Ogre::ManualObject* COgreCtrl::DisegnaCubo(Ogre::String name, Ogre::ResourcePtr 
     cube->triangle(14, 8, 12);	cube->triangle(14, 15, 8);
     cube->triangle(16, 17, 18);	cube->triangle(16, 19, 17);
     cube->end();
+    cube->setDynamic(true);
 
     return cube;
 }
 
-Ogre::ResourcePtr COgreCtrl::CaricaMateriale()
+void COgreCtrl::CaricaMateriali()
 {
     Ogre::MaterialManager* manager = Ogre::MaterialManager::getSingletonPtr();
-    return manager->load("OldMovie", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true);
+    m_MaterialiCaricati.push_back(manager->load("OldMovie", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true));
+    m_MaterialiCaricati.push_back(manager->load("Ogre", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true));
 }
 
 Ogre::ResourcePtr COgreCtrl::CaricaMesh()
@@ -75,7 +77,7 @@ Ogre::ResourcePtr COgreCtrl::CaricaMesh()
                 while (resourceIterator != resources.end())
                 {
                     Ogre::String nomeRisorsa = resourceIterator->second->getName();
-                    if (nomeRisorsa.compare("ogrehead") == 0 || nomeRisorsa.compare("Prefab_Cube") == 0)
+                    if (nomeRisorsa.compare("ogrehead") == 0/* || nomeRisorsa.compare("Prefab_Cube") == 0*/)
                         return resourceIterator->second;
                     else
                         resourceIterator++;
@@ -89,12 +91,18 @@ Ogre::ResourcePtr COgreCtrl::CaricaMesh()
 void COgreCtrl::ImpostaMateriale(Ogre::String nomeMateriale)
 {
     Ogre::SceneNode* nodoOgre = dynamic_cast<SceneNode*>(m_pSceneManager->getRootSceneNode()->getChild("NodoCubo"));
-    Ogre::MovableObject* pMovableCube = nodoOgre->getAttachedObject("CuboTest");
-    Ogre::ManualObject* pCubo = dynamic_cast<ManualObject*>(pMovableCube);
+    auto oggetti = nodoOgre->getAttachedObjects();
     MaterialPtr materiale = Ogre::MaterialManager::getSingleton().getByName(nomeMateriale);
-    auto sezioni = pCubo->getSections();
+    for (auto oggetto : oggetti)
+    {
+        reinterpret_cast<Entity*>(oggetto)->setMaterial(materiale);
+    }
+    /*Ogre::MovableObject* pMovableCube = nodoOgre->getAttachedObject("CuboTest");
+    /*Ogre::ManualObject* pCubo = dynamic_cast<ManualObject*>(pMovableCube);
+    /*
+    /*auto sezioni = pCubo->getSections();
     for (auto sezione = sezioni.begin(); sezione != sezioni.end(); sezione++)
-        (*sezione)->setMaterial(materiale);
+        (*sezione)->setMaterial(materiale);*/
     m_pRenderWindow->update();
 }
 
@@ -139,22 +147,23 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
         m_pCamera->setNearClipDistance(5);
         m_pCamera->setAutoAspectRatio(true);
         camNode->attachObject(m_pCamera);
-        camNode->setPosition(0, 0, 10);
+        camNode->setPosition(0, 0, 50);
         m_pRenderWindow->addViewport(m_pCamera);
 
         Ogre::SceneNode* ogreNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode("NodoCubo");
-        Ogre::ResourcePtr resourceMesh = nullptr; // CaricaMesh();
-        if (resourceMesh != nullptr)
+        Ogre::ResourcePtr resourceMesh = CaricaMesh();
+        CaricaMateriali();
+        if (resourceMesh != nullptr || true)
         {
-            //Ogre::MeshPtr mesh = Ogre::MeshPtr(resourceMesh);
-            //ogreNode->attachObject(m_pSceneManager->createEntity("Cubo", Ogre::SceneManager::PrefabType::PT_CUBE));
+            Ogre::MeshPtr mesh = Ogre::MeshPtr(MeshManager::getSingleton().load("ogrehead.mesh", "Mesh"));
+            
+            ogreNode->attachObject(m_pSceneManager->createEntity(mesh/*"Cubo", Ogre::SceneManager::PrefabType::PT_CUBE*/));
         }
         else
         {
-            ogreNode->attachObject(DisegnaCubo("CuboTest", CaricaMateriale()));
+            ogreNode->attachObject(DisegnaCubo("CuboTest", m_MaterialiCaricati[0]));
             ManualObject* cubo = reinterpret_cast<ManualObject *>(ogreNode->getAttachedObject("CuboTest"));
             ogreNode->rotate(Vector3::UNIT_Z, Radian(0.0));
-            // set initial rotation = 0 [-180°, +180°]
         }
         m_pRenderWindow->setActive(true);
         m_pRenderWindow->update();
