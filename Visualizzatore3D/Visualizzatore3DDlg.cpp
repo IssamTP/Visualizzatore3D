@@ -32,8 +32,6 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_LIST1, new CListCtrl()));
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_LIST1));
 	m_Texture = reinterpret_cast<CListCtrl*>(controllo->second);
-	m_Texture->AggiungiElemento(_T("OldMovie"), true);
-	m_Texture->AggiungiElemento(_T("Ogre"), false);
 
 	controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SEGNAPOSTO_OGRE, new CWindow()));
 	controllo->second->SetHandleFinestra(GetDlgItem(m_HandleFinestra, IDC_SEGNAPOSTO_OGRE));
@@ -144,5 +142,13 @@ void CVisualizzatore3DDlg::CreaControlloOgre()
 	GetWindowRect(m_Segnaposto->HandleFinestra(), &dimensioni);
 	m_pOgre = new COgreCtrl();
 	m_pOgre->InizializzaControllo(m_Segnaposto->HandleFinestra(), dimensioni);
+	std::vector<std::wstring> elementiDaInserire;
+	m_pOgre->GetNomiMateriali(elementiDaInserire);
+	bool selezionato = true;
+	for (auto materiale = elementiDaInserire.begin(); materiale != elementiDaInserire.end(); materiale++)
+	{
+		m_Texture->AggiungiElemento(materiale->c_str(), selezionato);
+		selezionato = false;
+	}
 	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_CONTROLLO_OGRE, m_pOgre));
 }
