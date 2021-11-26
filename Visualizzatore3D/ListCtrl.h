@@ -9,9 +9,8 @@ protected:
 public:
 	CListCtrl();
 	~CListCtrl();
-	void GetElemento(LVITEM& elemento);
-	unsigned int GetNumeroElementi() const;
+	UINT GetNumeroElementi() const;
 	void AggiungiElemento(LPCTSTR descrizione, int indice, bool selezionato);
-	void DisplayInfoNotification(LV_DISPINFO* pDisplayInfo);
+	void GetElemento(LVITEM& elemento);
 	void SetImageList(HIMAGELIST imageList);
 };

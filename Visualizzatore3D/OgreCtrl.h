@@ -2,6 +2,11 @@
 
 #include "Window.h"
 
+/// <summary>
+/// TODO:
+/// 1) Inserire gli assi nel controllo per avere riscontro della rotazione.
+/// 2) Migliorare la rotazione.
+/// </summary>
 class COgreCtrl : public CWindow
 {
 protected:
@@ -18,7 +23,6 @@ public:
 	void ImpostaMateriale(Ogre::String nomeMateriale);
 	void ImpostaRotazione(int angoloSessagesimale, unsigned short asse);
 	void InizializzaControllo(HWND parentHandle, RECT& dimensioni);
-	Ogre::ResourcePtr CaricaMesh();
 protected:
 	void CaricaNomiMateriali();
 	Ogre::ManualObject* CreaCubo(Ogre::String name, Ogre::MaterialPtr materialeDaUsare);
