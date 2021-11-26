@@ -2,6 +2,8 @@
 #include "Visualizzatore3D.h"
 #include "Window.h"
 
+#pragma region Costruttori
+
 CWindow::CWindow()
 {
 	m_RisultatoRegistrazione = 0;
@@ -49,20 +51,19 @@ CWindow::CWindow(HINSTANCE istanza, UINT idRisorsaNomeClasse, UINT idRisorsaNome
 		MostraMessaggioDiErrore();
 }
 
-void CWindow::AggiornaFinestra()
-{
-	UpdateWindow(m_HandleFinestra);
-}
+#pragma endregion
 
-void CWindow::CreaFinestra()
+/// <summary>
+/// Mette la finestra al centro dello schermo.
+/// </summary>
+void CWindow::CentraFinestra()
 {
-	if (m_RisultatoRegistrazione != 0)
-	{
-		DWORD stileFinestra = 0UL;
-		DWORD stileFinestraEsteso = 0UL;
-
-		m_HandleFinestra = CreateWindowEx(stileFinestraEsteso, m_NomeClasseFinestra.c_str(), _T(""), stileFinestra, 640, 480, 640, 480, m_HandleProprietario, nullptr, m_Istanza, this);
-	}
+	int larghezzaSchermo, altezzaSchermo;
+	RECT dimensioniFinestra;
+	larghezzaSchermo = GetSystemMetrics(SM_CXSCREEN);
+	altezzaSchermo = GetSystemMetrics(SM_CYSCREEN);
+	GetWindowRect(m_HandleFinestra, &dimensioniFinestra);
+	MoveWindow(m_HandleFinestra, (larghezzaSchermo - (dimensioniFinestra.right - dimensioniFinestra.left)) / 2, (altezzaSchermo - (dimensioniFinestra.bottom - dimensioniFinestra.top)) / 2, dimensioniFinestra.right - dimensioniFinestra.left, dimensioniFinestra.bottom - dimensioniFinestra.top, TRUE);
 }
 
 void CWindow::MostraMessaggioDiErrore()
@@ -75,6 +76,54 @@ void CWindow::MostraMessaggioDiErrore()
 	LocalFree(messaggio);
 }
 
+LONG CWindow::AltezzaFinestra() const
+{
+	RECT rettangoloFinestra;
+	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
+	return rettangoloFinestra.bottom - rettangoloFinestra.top;
+}
+
+LONG CWindow::LarghezzaFinestra() const
+{
+	RECT rettangoloFinestra;
+	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
+	return rettangoloFinestra.right - rettangoloFinestra.left;
+}
+
+#pragma region Wrap API Comuni
+
+/// <summary>
+/// Invalida l'intera finestra. Il messaggio non viene accodato.
+/// </summary>
+void CWindow::AggiornaFinestra()
+{
+	UpdateWindow(m_HandleFinestra);
+}
+
+/// <summary>
+/// Crea materialmente la finestra.
+/// </summary>
+void CWindow::CreaFinestra(HWND parent)
+{
+	if (m_RisultatoRegistrazione != 0)
+	{
+		DWORD stileFinestra = 0UL;
+		DWORD stileFinestraEsteso = 0UL;
+
+		m_HandleProprietario = parent;
+		m_HandleFinestra = CreateWindowEx(stileFinestraEsteso, m_NomeClasseFinestra.c_str(), _T(""), stileFinestra, 640, 480, 640, 480, m_HandleProprietario, nullptr, m_Istanza, this);
+	}
+}
+
+/// <summary>
+/// Mostra la finestra nella modalità specificata.
+/// </summary>
+/// <param name="comandoShow"></param>
+void CWindow::MostraFinestra(int comandoShow)
+{
+	ShowWindow(m_HandleFinestra, comandoShow);
+}
+
 /// <summary>
 /// https://docs.microsoft.com/it-it/windows/win32/api/winuser/ns-winuser-wndclassexa/
 /// Si noti che la funzione dovrebbe chiamare:
@@ -82,7 +131,7 @@ void CWindow::MostraMessaggioDiErrore()
 /// 2) SetCursor;
 /// </summary>
 /// <todo>Terminare l'implementazione.</todo>
-void CWindow::RegistraFinestra()
+void CWindow::RegistraClasseFinestra()
 {
 	// Esempio di registrazione:
 	m_InformazioniFinestra.style = CS_HREDRAW | CS_VREDRAW;
@@ -97,31 +146,6 @@ void CWindow::RegistraFinestra()
 	m_InformazioniFinestra.lpszClassName = m_NomeClasseFinestra.c_str();
 	m_InformazioniFinestra.hIconSm = LoadIcon(m_InformazioniFinestra.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 	m_RisultatoRegistrazione = RegisterClassEx(&m_InformazioniFinestra);
-}
-
-void CWindow::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
-{
-
-}
-
-void CWindow::OnHScroll(WPARAM wParam, LPARAM lParam)
-{
-
-}
-
-void CWindow::OnPaint()
-{
-	for (auto controllo = m_ControlliFinestra.begin(); controllo != m_ControlliFinestra.end(); controllo++)
-	{
-		if (controllo->second->m_DisegnoAutonomo)
-		{
-			controllo->second->OnPaint();
-		}
-	}
-}
-
-void CWindow::OnVScroll(WPARAM wParam, LPARAM lParam)
-{
 }
 
 /// <summary>
@@ -155,58 +179,145 @@ void CWindow::SetIcon(UINT idRisorsa, bool usaCaricamentoAvanzato)
 		MostraMessaggioDiErrore();
 }
 
+#pragma endregion
+
+#pragma region Gestione Messaggi
+
+#pragma region Notifiche
+
+void CWindow::OnNotify(UINT idNotificatore, LPNMHDR nmhdr)
+{
+}
+
+#pragma endregion
+
+#pragma region Scroll Bar
+
+/// <summary>
+/// Richiede una implementazione.
+/// </summary>
+/// <param name="codice"></param>
+/// <param name="posizione"></param>
+/// <param name="scrollBar">Può essere null.</param>
+void CWindow::OnHScroll(UINT codice, int posizione, HANDLE scrollBar)
+{
+}
+
+/// <summary>
+/// Richiede una implementazione.
+/// </summary>
+/// <param name="codice"></param>
+/// <param name="posizione"></param>
+/// <param name="scrollBar">Può essere null.</param>
+void CWindow::OnVScroll(UINT codice, int posizione, HANDLE scrollBar)
+{
+}
+
+#pragma endregion 
+
+#pragma region Disegno
+
+/// <summary>
+/// La versione base di questa funzione inizia la procedura di disegno.
+/// </summary>
+void CWindow::OnPaint()
+{
+	PAINTSTRUCT datiDisegno;
+	BeginPaint(m_HandleFinestra, &datiDisegno);
+	// Chiama l'implementazione personalizzata.
+	OnPaint(&datiDisegno);
+	// Questo è da eliminare probabilmente.
+	for (auto controllo = m_ControlliFinestra.begin(); controllo != m_ControlliFinestra.end(); controllo++)
+		if (controllo->second->m_DisegnoAutonomo)
+			controllo->second->OnPaint(&datiDisegno);
+	EndPaint(m_HandleFinestra, &datiDisegno);
+}
+
+/// <summary>
+/// Versione da sovrascrivere.
+/// </summary>
+/// <param name="datiDisegno"></param>
+void CWindow::OnPaint(LPPAINTSTRUCT datiDisegno)
+{
+
+}
+
+#pragma endregion
+
+#pragma endregion
+
+#pragma region Operatori
+
+/// <summary>
+/// Consente di usare CWindow con le API comuni.
+/// </summary>
+CWindow::operator HWND()
+{
+	return m_HandleFinestra;
+}
+
+#pragma endregion
+
+/// <summary>
+/// Implementazione della procedura.
+/// </summary>
+/// <param name="hWnd"></param>
+/// <param name="messaggio"></param>
+/// <param name="wParam"></param>
+/// <param name="lParam"></param>
+/// <returns></returns>
 INT_PTR CWindow::ProceduraFinestra(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
 {
-	int larghezzaSchermo, altezzaSchermo;
 	INT_PTR messaggioGestito = FALSE;
-	RECT dimensioniFinestra;
 	switch (messaggio)
 	{
 	default:
 		messaggioGestito = DefWindowProc(hWnd, messaggio, wParam, lParam);
 		break;
-	case WM_CREATE:
-		larghezzaSchermo = GetSystemMetrics(SM_CXSCREEN);
-		altezzaSchermo = GetSystemMetrics(SM_CYSCREEN);
-		GetWindowRect(hWnd, &dimensioniFinestra);
-		MoveWindow(hWnd, (larghezzaSchermo - (dimensioniFinestra.right - dimensioniFinestra.left)) / 2, (altezzaSchermo - (dimensioniFinestra.bottom - dimensioniFinestra.top)) / 2, dimensioniFinestra.right - dimensioniFinestra.left, dimensioniFinestra.bottom - dimensioniFinestra.top, TRUE);
-		break;
-	case WM_VSCROLL:
-		OnVScroll(wParam, lParam);
-		break;
-	case WM_HSCROLL:
-		OnHScroll(wParam, lParam);
-		break;
 	case WM_CLOSE:
+	{
 		messaggioGestito = TRUE;
 		DestroyWindow(m_HandleFinestra);
+	}
 		break;
-	case WM_PAINT:
-		OnPaint();
+	case WM_CREATE:
+	{
+		CentraFinestra();
+		messaggioGestito = TRUE;
+	}
 		break;
 	case WM_DESTROY:
+	{
 		messaggioGestito = TRUE;
 		PostQuitMessage(EXIT_SUCCESS);
+	}
+		break;
+	case WM_HSCROLL:
+	{
+		OnHScroll(LOWORD(wParam), HIWORD(wParam), reinterpret_cast<HANDLE>(lParam));
+		messaggioGestito = TRUE;
+	}
 		break;
 	case WM_NOTIFY:
-		OnNotify(hWnd, messaggio, wParam, lParam);
+	{
+		OnNotify(LOWORD(wParam), reinterpret_cast<LPNMHDR>(lParam));
+		messaggioGestito = TRUE;
+	}
+		break;
+	case WM_PAINT:
+	{
+		OnPaint();
+		messaggioGestito = TRUE;
+	}
+		break;
+	case WM_VSCROLL:
+	{
+		OnVScroll(LOWORD(wParam), HIWORD(wParam), reinterpret_cast<HANDLE>(lParam));
+		messaggioGestito = TRUE;
+	}
 		break;
 	}
 	return messaggioGestito;
-}
-
-LONG CWindow::AltezzaFinestra() const
-{
-	RECT rettangoloFinestra;
-	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
-	return rettangoloFinestra.bottom - rettangoloFinestra.top;
-}
-
-LONG CWindow::LarghezzaFinestra() const
-{
-	RECT rettangoloFinestra;
-	GetWindowRect(m_HandleFinestra, &rettangoloFinestra);
-	return rettangoloFinestra.right - rettangoloFinestra.left;
 }
 
 #pragma region Statiche

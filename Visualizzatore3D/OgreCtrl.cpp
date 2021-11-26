@@ -127,7 +127,7 @@ void COgreCtrl::ImpostaMateriale(Ogre::String nomeMateriale)
 
 void COgreCtrl::ImpostaRotazione(int angoloSessagesimale, unsigned short asse)
 {
-    constexpr Real degARad = M_PI / 180.0F;
+    constexpr Real degARad = static_cast<Real>(M_PI) / 180.0F;
     m_Rotazione = angoloSessagesimale * degARad;
     if (m_pSceneManager != nullptr)
     {

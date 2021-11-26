@@ -2,6 +2,8 @@
 #include "Visualizzatore3D.h"
 #include "Visualizzatore3DDlg.h"
 
+#pragma region Costruttori
+
 CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
 	: CDialog(istanza, IDC_VISUALIZZATORE3D, idRisorsa)
 {
@@ -16,6 +18,67 @@ CVisualizzatore3DDlg::~CVisualizzatore3DDlg()
 {
 }
 
+#pragma endregion
+
+#pragma region Implementazione specifica
+
+/// <summary>
+/// Creazione del controllo ogre.
+/// </summary>
+void CVisualizzatore3DDlg::CreaControlloOgre()
+{
+	RECT dimensioni;
+	GetWindowRect(m_Segnaposto->HandleFinestra(), &dimensioni);
+	m_pOgre = new COgreCtrl();
+	m_pOgre->InizializzaControllo(m_Segnaposto->HandleFinestra(), dimensioni);
+	std::vector<std::wstring> elementiDaInserire;
+	m_pOgre->GetNomiMateriali(elementiDaInserire);
+	m_Texture->SetImageList(CreaImageList());
+	bool selezionato = true;
+	int indice = 0;
+	for (auto materiale = elementiDaInserire.begin(); materiale != elementiDaInserire.end(); materiale++)
+	{
+		m_Texture->AggiungiElemento(materiale->c_str(), indice++, selezionato);
+		selezionato = false;
+	}
+	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_CONTROLLO_OGRE, m_pOgre));
+}
+
+/// <summary>
+/// Crea la ImageList per la ListCtrl dei materiali.
+/// </summary>
+HIMAGELIST CVisualizzatore3DDlg::CreaImageList()
+{
+	HIMAGELIST textures = ImageList_Create(48, 48, ILC_COLORDDB | ILC_ORIGINALSIZE, 5, 5);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE2), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE3), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_SPHEREMAP), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_EYES), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_GREENSKIN), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(textures, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_TUSK), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	return textures;
+}
+
+#pragma endregion 
+
+#pragma region Wrap API Comuni
+
+/// <summary>
+/// Creazione della finestra.
+/// </summary>
+/// <param name="parent"></param>
+void CVisualizzatore3DDlg::CreaFinestra(HWND parent)
+{
+	CDialog::CreaFinestra(parent);
+	CreaControlloOgre();
+}
+
+#pragma region Creazione specifica Dialog
+
+/// <summary>
+/// Nelle dialog è possibile istanziare i vari controlli partendo dallo script delle risorse.
+/// </summary>
 void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 {
 	auto controllo = m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_SLIDER1, new CSliderCtrl()));
@@ -39,18 +102,23 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 	m_Segnaposto = reinterpret_cast<CWindow*>(controllo->second);
 }
 
-void CVisualizzatore3DDlg::CreaDialog(HWND parent)
-{
-	CDialog::CreaDialog(parent);
-	CreaControlloOgre();
-}
+#pragma endregion
 
-void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
+#pragma endregion
+
+#pragma region Gestione Eventi
+
+/// <summary>
+/// Implementazione dell'evento di scroll orizzontale.
+/// </summary>
+/// <param name="operazione"></param>
+/// <param name="posizione"></param>
+/// <param name="scrollBar"></param>
+void CVisualizzatore3DDlg::OnHScroll(UINT operazione, int posizione, HANDLE scrollBar)
 {
-	int posizione;
-	if (m_HSlider != nullptr)
+	if (m_HSlider != nullptr && m_pOgre != nullptr)
 	{
-		switch (LOWORD(wParam))
+		switch (operazione)
 		{
 		case TB_BOTTOM: // The user pressed the END key(VK_END).
 			break;
@@ -66,9 +134,7 @@ void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 			break;
 		case TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
 		case TB_THUMBTRACK: // The user dragged the slider.
-			posizione = HIWORD(wParam);
-			if (m_pOgre != nullptr)
-				m_pOgre->ImpostaRotazione(posizione - 180, 0u);
+			m_pOgre->ImpostaRotazione(posizione - 180, 0u);
 			SetDlgItemText(m_HandleFinestra, IDC_HROT, std::to_wstring(posizione).append(L"°").c_str());
 			break;
 		case TB_TOP: // The user pressed the HOME key(VK_HOME).
@@ -77,26 +143,27 @@ void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-void CVisualizzatore3DDlg::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
+void CVisualizzatore3DDlg::OnNotify(UINT idNotificatore, LPNMHDR nmhdr)
 {
-	switch (LOWORD(wParam))
+	switch (idNotificatore)
 	{
 	case IDC_LIST1:
 		if (m_Texture != nullptr)
 		{
-			NMHDR* pNMHDR = reinterpret_cast<NMHDR*>(lParam);
-			switch (pNMHDR->code)
+			switch (nmhdr->code)
 			{
 			case NM_CLICK:
-				NMITEMACTIVATE* pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+				NMITEMACTIVATE* pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(nmhdr);
 				if (0 <= pNMItemActivate->iItem)
 				{
-					LVITEM elemento;
-					memset(&elemento, 0, sizeof(LVITEM));
+					LVITEM elemento = { 0 };
 					elemento.iItem = pNMItemActivate->iItem;
 					m_Texture->GetElemento(elemento);
-					std::wstring nomeMateriale(elemento.pszText);
-					m_pOgre->ImpostaMateriale(Ogre::String(nomeMateriale.begin(), nomeMateriale.end()));
+					if (elemento.pszText != nullptr)
+					{
+						std::wstring nomeMateriale(elemento.pszText);
+						m_pOgre->ImpostaMateriale(Ogre::String(nomeMateriale.begin(), nomeMateriale.end()));
+					}
 				}
 				break;
 			}
@@ -105,12 +172,17 @@ void CVisualizzatore3DDlg::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LP
 	}
 }
 
-void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
+/// <summary>
+/// Implementazione dell'evento VScroll.
+/// </summary>
+/// <param name="operazione"></param>
+/// <param name="posizione"></param>
+/// <param name="scrollBar"></param>
+void CVisualizzatore3DDlg::OnVScroll(UINT operazione, int posizione, HANDLE scrollBar)
 {
-	int posizione;
-	if (m_VSlider != nullptr)
+	if (m_VSlider != nullptr && m_pOgre != nullptr)
 	{
-		switch (LOWORD(wParam))
+		switch (operazione)
 		{
 		case TB_BOTTOM: // The user pressed the END key(VK_END).
 			break;
@@ -126,9 +198,7 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 			break;
 		case  TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
 		case TB_THUMBTRACK: // The user dragged the slider.
-			posizione = HIWORD(wParam);
-			if (m_pOgre != nullptr)
-				m_pOgre->ImpostaRotazione(posizione - 180, 1);
+			m_pOgre->ImpostaRotazione(posizione - 180, 1);
 			SetDlgItemText(m_HandleFinestra, IDC_HROT, std::to_wstring(posizione).append(L"°").c_str());
 			break;
 		case TB_TOP: // The user pressed the HOME key(VK_HOME).
@@ -137,31 +207,4 @@ void CVisualizzatore3DDlg::OnVScroll(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-void CVisualizzatore3DDlg::CreaControlloOgre()
-{
-	RECT dimensioni;
-	GetWindowRect(m_Segnaposto->HandleFinestra(), &dimensioni);
-	m_pOgre = new COgreCtrl();
-	m_pOgre->InizializzaControllo(m_Segnaposto->HandleFinestra(), dimensioni);
-	std::vector<std::wstring> elementiDaInserire;
-	m_pOgre->GetNomiMateriali(elementiDaInserire);
-
-	HIMAGELIST texture = ImageList_Create(48, 48, ILC_COLORDDB | ILC_ORIGINALSIZE, 5, 5);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE2), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE3), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-s	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_SPHEREMAP), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_EYES), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_GREENSKIN), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_TUSK), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
-	m_Texture->SetImageList(texture);
-
-	bool selezionato = true;
-	int indice = 0;
-	for (auto materiale = elementiDaInserire.begin(); materiale != elementiDaInserire.end(); materiale++)
-	{
-		m_Texture->AggiungiElemento(materiale->c_str(), indice++, selezionato);
-		selezionato = false;
-	}
-	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_CONTROLLO_OGRE, m_pOgre));
-}
+#pragma endregion

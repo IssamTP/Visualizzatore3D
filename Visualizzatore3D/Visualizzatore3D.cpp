@@ -16,7 +16,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     InitCommonControls();
 
     CVisualizzatore3DDlg visualizzatore3D(hInstance, IDD_VISUALIZZATORE3D);
-    visualizzatore3D.CreaDialog(nullptr);
+    visualizzatore3D.CreaFinestra(nullptr);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_VISUALIZZATORE3D));
 

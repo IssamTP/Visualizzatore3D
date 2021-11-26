@@ -20,19 +20,16 @@ public:
 	CWindow();
 	CWindow(HINSTANCE istanza, UINT idRisorsaNomeFinestra, HWND proprietaria);
 	CWindow(HINSTANCE istanza, UINT idRisorsaNomeClasse, UINT idRisorsaNomeFinestra, HWND proprietaria);
-	virtual void OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
-	virtual void OnHScroll(WPARAM wParam, LPARAM lParam);
-	virtual void OnPaint();
-	virtual void OnVScroll(WPARAM wParam, LPARAM lParam);
-	virtual INT_PTR ProceduraFinestra(HWND handle, UINT messaggio, WPARAM wParam, LPARAM lParam);
+	virtual void CreaFinestra(HWND parent);
 	inline bool IsDisegnoAutonomo() const
 	{
 		return m_DisegnoAutonomo;
 	}
 	void AggiornaFinestra();
-	void CreaFinestra();
+	void CentraFinestra();
+	void MostraFinestra(int comandoShow);
 	void MostraMessaggioDiErrore();
-	void RegistraFinestra();
+	void RegistraClasseFinestra();
 	void SetCursor(UINT idRisorsa, bool usaCaricamentoAvanzato);
 	void SetIcon(UINT idRisorsa, bool usaCaricamentoAvanzato);
 	inline void SetHandleFinestra(HWND handleFinestra)
@@ -45,6 +42,14 @@ public:
 	}
 	LONG AltezzaFinestra() const;
 	LONG LarghezzaFinestra() const;
+	operator HWND();
+protected:
+	virtual void OnHScroll(UINT operazione, int posizione, HANDLE scrollBar);
+	virtual void OnNotify(UINT idNotificatore, LPNMHDR nmhdr);
+	virtual void OnPaint(LPPAINTSTRUCT datiDisegno);
+	virtual void OnVScroll(UINT operazione, int posizione, HANDLE scrollBar);
+	virtual INT_PTR ProceduraFinestra(HWND handle, UINT messaggio, WPARAM wParam, LPARAM lParam);
+	void OnPaint();
 private:
 	static INT_PTR CALLBACK WndProc(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
 };

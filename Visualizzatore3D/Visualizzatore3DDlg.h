@@ -16,12 +16,13 @@ protected:
 public:
 	CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa);
 	~CVisualizzatore3DDlg();
-	virtual void CreaDialog(HWND parent);
+	virtual void CreaFinestra(HWND parent) override;
 protected:
 	virtual void CreaControlliDaRisorse();
-	virtual void OnHScroll(WPARAM wParam, LPARAM lParam);
-	virtual void OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
-	virtual void OnVScroll(WPARAM wParam, LPARAM lParam);
-	virtual void CreaControlloOgre();
+	virtual void OnHScroll(UINT operazione, int posizione, HANDLE scrollBar) override;
+	virtual void OnNotify(UINT idNotificatore, LPNMHDR nmhdr) override;
+	virtual void OnVScroll(UINT operazione, int posizione, HANDLE scrollBar) override;
+	void CreaControlloOgre();
+	HIMAGELIST CreaImageList();
 };
 

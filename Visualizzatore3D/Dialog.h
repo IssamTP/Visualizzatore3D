@@ -9,16 +9,11 @@ protected:
 public:
 	CDialog(HINSTANCE istanza, UINT idNomeFinestra, int idRisorsaTemplate);
 	~CDialog();
-	virtual void CreaDialog(HWND parent);
-	void MostraFinestra(int comandoShow);
-	inline HWND HandleFinestra()
-	{
-		return m_HandleFinestra;
-	}
+	virtual void CreaFinestra(HWND parent) override;
 protected:
 	virtual void CreaControlliDaRisorse() = 0;
-	virtual INT_PTR ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
-protected:
+	INT_PTR ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
+private:
 	static INT_PTR CALLBACK DlgProc(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam);
 };
 
