@@ -96,5 +96,26 @@
     <Image Include="Visualizzatore3D.ico">
       <Filter>File di risorse</Filter>
     </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="GreenSkin.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="spheremap.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="tusk.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="bitmap2.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="bitmap3.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="Eyes.bmp">
+      <Filter>File di risorse</Filter>
+    </Image>
   </ItemGroup>
 </Project>

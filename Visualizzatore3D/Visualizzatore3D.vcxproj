@@ -201,7 +201,14 @@
     <ResourceCompile Include="Visualizzatore3D.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap1.bmp" />
+    <Image Include="bitmap2.bmp" />
+    <Image Include="bitmap3.bmp" />
+    <Image Include="Eyes.bmp" />
+    <Image Include="GreenSkin.bmp" />
     <Image Include="small.ico" />
+    <Image Include="spheremap.bmp" />
+    <Image Include="tusk.bmp" />
     <Image Include="Visualizzatore3D.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

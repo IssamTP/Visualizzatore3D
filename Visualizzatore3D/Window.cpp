@@ -157,12 +157,19 @@ void CWindow::SetIcon(UINT idRisorsa, bool usaCaricamentoAvanzato)
 
 INT_PTR CWindow::ProceduraFinestra(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
 {
+	int larghezzaSchermo, altezzaSchermo;
 	INT_PTR messaggioGestito = FALSE;
+	RECT dimensioniFinestra;
 	switch (messaggio)
 	{
-	case WM_CREATE:
 	default:
 		messaggioGestito = DefWindowProc(hWnd, messaggio, wParam, lParam);
+		break;
+	case WM_CREATE:
+		larghezzaSchermo = GetSystemMetrics(SM_CXSCREEN);
+		altezzaSchermo = GetSystemMetrics(SM_CYSCREEN);
+		GetWindowRect(hWnd, &dimensioniFinestra);
+		MoveWindow(hWnd, (larghezzaSchermo - (dimensioniFinestra.right - dimensioniFinestra.left)) / 2, (altezzaSchermo - (dimensioniFinestra.bottom - dimensioniFinestra.top)) / 2, dimensioniFinestra.right - dimensioniFinestra.left, dimensioniFinestra.bottom - dimensioniFinestra.top, TRUE);
 		break;
 	case WM_VSCROLL:
 		OnVScroll(wParam, lParam);
@@ -179,7 +186,6 @@ INT_PTR CWindow::ProceduraFinestra(HWND hWnd, UINT messaggio, WPARAM wParam, LPA
 		break;
 	case WM_DESTROY:
 		messaggioGestito = TRUE;
-		// TODO: Pulizia risorse...
 		PostQuitMessage(EXIT_SUCCESS);
 		break;
 	case WM_NOTIFY:

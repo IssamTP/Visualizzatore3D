@@ -11,6 +11,7 @@ public:
 	~CListCtrl();
 	void GetElemento(LVITEM& elemento);
 	unsigned int GetNumeroElementi() const;
-	void AggiungiElemento(LPCTSTR descrizione, bool selezionato);
+	void AggiungiElemento(LPCTSTR descrizione, int indice, bool selezionato);
 	void DisplayInfoNotification(LV_DISPINFO* pDisplayInfo);
+	void SetImageList(HIMAGELIST imageList);
 };

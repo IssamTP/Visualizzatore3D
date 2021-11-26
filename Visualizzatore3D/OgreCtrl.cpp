@@ -14,10 +14,14 @@ COgreCtrl::COgreCtrl()
 
 COgreCtrl::~COgreCtrl()
 {
+    auto& rgm = ResourceGroupManager::getSingleton();
+    rgm.clearResourceGroup("General");
 }
 
 void COgreCtrl::CaricaNomiMateriali()
 {
+    auto& rgm = ResourceGroupManager::getSingleton();
+    rgm.initialiseResourceGroup("General");
     ResourceManager::ResourceMapIterator materiali = MaterialManager::getSingletonPtr()->getResourceIterator();
     for (auto materiale = materiali.begin(); materiale != materiali.end(); materiale++)
         m_ListaNomiMateriali.insert(m_ListaNomiMateriali.end(), materiale->second.get()->getName());
@@ -98,15 +102,14 @@ void COgreCtrl::GetNomiMateriali(std::vector<std::wstring>& nomiMateriali)
 
 void COgreCtrl::ImpostaMateriale(Ogre::String nomeMateriale)
 {
-    Ogre::SceneNode* nodoOgre = dynamic_cast<SceneNode*>(m_pSceneManager->getRootSceneNode()->getChild("NodoCubo"));
-    auto oggetti = nodoOgre->getAttachedObjects();
     try
     {
+        auto* nodo = m_pSceneManager->getSceneNode("NodoCubo");
+        auto* cubo = reinterpret_cast<ManualObject *>(nodo->getAttachedObject("CuboTest"));
         MaterialPtr materialeDaUsare = MaterialManager::getSingletonPtr()->getByName(nomeMateriale);
         if (materialeDaUsare != nullptr)
         {
-            for (auto oggetto : oggetti)
-                reinterpret_cast<Entity*>(oggetto)->setMaterial(materialeDaUsare);
+            cubo->setMaterial(0u, materialeDaUsare);
         }
     }
     catch (std::exception eccezione)

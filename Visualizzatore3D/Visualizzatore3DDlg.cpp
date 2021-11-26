@@ -5,6 +5,7 @@
 CVisualizzatore3DDlg::CVisualizzatore3DDlg(HINSTANCE istanza, int idRisorsa)
 	: CDialog(istanza, IDC_VISUALIZZATORE3D, idRisorsa)
 {
+	m_Segnaposto = nullptr;
 	m_HSlider = nullptr;
 	m_Texture = nullptr;
 	m_VSlider = nullptr;
@@ -63,7 +64,7 @@ void CVisualizzatore3DDlg::OnHScroll(WPARAM wParam, LPARAM lParam)
 			break;
 		case TB_PAGEUP: // The user clicked the channel above or to the left of the slider(VK_PRIOR).
 			break;
-		case  TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
+		case TB_THUMBPOSITION: // The trackbar received WM_LBUTTONUP following a TB_THUMBTRACK notification code.
 		case TB_THUMBTRACK: // The user dragged the slider.
 			posizione = HIWORD(wParam);
 			if (m_pOgre != nullptr)
@@ -88,7 +89,7 @@ void CVisualizzatore3DDlg::OnNotify(HWND hWnd, UINT messaggio, WPARAM wParam, LP
 			{
 			case NM_CLICK:
 				NMITEMACTIVATE* pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-				if (0 <= pNMItemActivate->iItem && pNMItemActivate->iItem < 2)
+				if (0 <= pNMItemActivate->iItem)
 				{
 					LVITEM elemento;
 					memset(&elemento, 0, sizeof(LVITEM));
@@ -144,10 +145,22 @@ void CVisualizzatore3DDlg::CreaControlloOgre()
 	m_pOgre->InizializzaControllo(m_Segnaposto->HandleFinestra(), dimensioni);
 	std::vector<std::wstring> elementiDaInserire;
 	m_pOgre->GetNomiMateriali(elementiDaInserire);
+
+	HIMAGELIST texture = ImageList_Create(48, 48, ILC_COLORDDB | ILC_ORIGINALSIZE, 5, 5);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE2), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_WHITE3), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+s	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_SPHEREMAP), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_EYES), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_GREENSKIN), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	ImageList_Add(texture, (HBITMAP)LoadImage(m_Istanza, MAKEINTRESOURCE(IDB_TUSK), IMAGE_BITMAP, 48, 48, LR_DEFAULTCOLOR), nullptr);
+	m_Texture->SetImageList(texture);
+
 	bool selezionato = true;
+	int indice = 0;
 	for (auto materiale = elementiDaInserire.begin(); materiale != elementiDaInserire.end(); materiale++)
 	{
-		m_Texture->AggiungiElemento(materiale->c_str(), selezionato);
+		m_Texture->AggiungiElemento(materiale->c_str(), indice++, selezionato);
 		selezionato = false;
 	}
 	m_ControlliFinestra.insert(m_ControlliFinestra.end(), std::make_pair(IDC_CONTROLLO_OGRE, m_pOgre));

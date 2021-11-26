@@ -24,15 +24,16 @@ unsigned int CListCtrl::GetNumeroElementi() const
     return static_cast<unsigned int>(ListView_GetItemCount(m_HandleFinestra));
 }
 
-void CListCtrl::AggiungiElemento(LPCTSTR descrizione, bool selezionato)
+void CListCtrl::AggiungiElemento(LPCTSTR descrizione, int indice, bool selezionato)
 {
 	LVITEM nuovoElemento = { 0 };
 	nuovoElemento.iItem = sizeof(LVITEM);
-	nuovoElemento.mask = LVIF_TEXT | LVIF_STATE;
+	nuovoElemento.mask = LVIF_TEXT | LVIF_STATE | LVIF_IMAGE;
     if (selezionato)
         nuovoElemento.state = LVIS_SELECTED | LVIS_FOCUSED;
     else
         nuovoElemento.state = LVIS_FOCUSED;
+    nuovoElemento.iImage = indice;
     nuovoElemento.stateMask = LVIS_FOCUSED | LVIS_SELECTED;
 	nuovoElemento.pszText = new TCHAR[256];
     _tcscpy_s(nuovoElemento.pszText, 256, descrizione);
@@ -49,4 +50,10 @@ void CListCtrl::AggiungiElemento(LPCTSTR descrizione, bool selezionato)
 void CListCtrl::DisplayInfoNotification(LV_DISPINFO* pDisplayInfo)
 {
 
+}
+
+void CListCtrl::SetImageList(HIMAGELIST imageList)
+{
+    if (imageList != nullptr)
+        ListView_SetImageList(m_HandleFinestra, imageList, LVSIL_NORMAL);
 }

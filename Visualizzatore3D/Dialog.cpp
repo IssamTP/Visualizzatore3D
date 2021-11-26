@@ -27,19 +27,28 @@ void CDialog::MostraFinestra(int comandoShow)
 
 INT_PTR CDialog::ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARAM lParam)
 {
+	int larghezzaSchermo, altezzaSchermo;
 	INT_PTR messaggioGestito = FALSE;
+	RECT dimensioniFinestra;
 	switch (messaggio)
 	{
 	default:
-		// messaggioGestito = DefDlgProc(hWnd, messaggio, wParam, lParam);
+		//messaggioGestito = DefDlgProc(hWnd, messaggio, wParam, lParam);
 		break;
-	case WM_CREATE:
+	case WM_INITDIALOG:
+		larghezzaSchermo = GetSystemMetrics(SM_CXSCREEN);
+		altezzaSchermo = GetSystemMetrics(SM_CYSCREEN);
+		GetWindowRect(hWnd, &dimensioniFinestra);
+		MoveWindow(hWnd, (larghezzaSchermo - (dimensioniFinestra.right - dimensioniFinestra.left)) / 2, (altezzaSchermo - (dimensioniFinestra.bottom - dimensioniFinestra.top)) / 2, dimensioniFinestra.right - dimensioniFinestra.left, dimensioniFinestra.bottom - dimensioniFinestra.top, TRUE);
+		messaggioGestito = TRUE;
 		break;
 	case WM_VSCROLL:
 		OnVScroll(wParam, lParam);
+		messaggioGestito = TRUE;
 		break;
 	case WM_HSCROLL:
 		OnHScroll(wParam, lParam);
+		messaggioGestito = TRUE;
 		break;
 	case WM_CLOSE:
 		messaggioGestito = TRUE;

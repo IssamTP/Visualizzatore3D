@@ -12,6 +12,9 @@ OgreApplication::OgreApplication()
 
 OgreApplication::~OgreApplication()
 {
+    auto& rgm = ResourceGroupManager::getSingleton();
+    /*rgm.unloadResourceGroup("General");
+    rgm.clearResourceGroup("General");*/
     Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);
     if (m_MaterialMgrListener != nullptr)
     {

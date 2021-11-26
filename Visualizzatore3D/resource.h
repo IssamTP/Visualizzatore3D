@@ -14,6 +14,14 @@
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOG1                     129
 #define IDD_VISUALIZZATORE3D            129
+#define IDB_WHITE                       130
+#define IDB_GREENSKIN                   131
+#define IDB_SPHEREMAP                   132
+#define IDB_TUSK                        133
+#define IDB_WHITE2                      134
+#define IDB_WHITE3                      135
+#define IDB_BITMAP1                     136
+#define IDB_EYES                        136
 #define IDC_LIST1                       1000
 #define IDC_SLIDER1                     1001
 #define IDC_SLIDER2                     1002
@@ -29,7 +37,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        130
+#define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           110
