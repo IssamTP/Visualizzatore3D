@@ -19,6 +19,7 @@ public:
 	virtual void CreaFinestra(HWND parent) override;
 protected:
 	virtual void CreaControlliDaRisorse();
+	virtual void OnClose() override;
 	virtual void OnHScroll(UINT operazione, int posizione, HANDLE scrollBar) override;
 	virtual void OnNotify(UINT idNotificatore, LPNMHDR nmhdr) override;
 	virtual void OnVScroll(UINT operazione, int posizione, HANDLE scrollBar) override;

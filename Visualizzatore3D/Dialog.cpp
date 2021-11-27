@@ -49,6 +49,7 @@ INT_PTR CDialog::ProceduraDialog(HWND hWnd, UINT messaggio, WPARAM wParam, LPARA
 	case WM_CLOSE:
 	{
 		messaggioGestito = TRUE;
+		OnClose();
 		DestroyWindow(m_HandleFinestra);
 	}
 		break;

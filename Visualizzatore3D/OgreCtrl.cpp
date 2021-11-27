@@ -105,38 +105,44 @@ void COgreCtrl::InizializzaControllo(HWND parentHandle, RECT& dimensioni)
     }
 }
 
+void COgreCtrl::LiberaRisorseOgre()
+{
+    m_Cubo->clear();
+    delete m_Cubo;
+}
+
 ManualObject* COgreCtrl::CreaCubo(String name, MaterialPtr materialeDaUsare)
 {
-    Ogre::ManualObject* cube = new Ogre::ManualObject(name);
-    cube->begin(materialeDaUsare);
-    cube->position(0.5f, -0.5f, 1.0f); cube->normal(0.408248f, -0.816497f, 0.408248f); cube->textureCoord(1, 0);
-    cube->position(-0.5f, -0.5f, 0.0f); cube->normal(-0.408248f, -0.816497f, -0.408248f); cube->textureCoord(0, 1);
-    cube->position(0.5f, -0.5f, 0.0f); cube->normal(0.666667f, -0.333333f, -0.666667f); cube->textureCoord(1, 1);
-    cube->position(-0.5f, -0.5f, 1.0f); cube->normal(-0.666667f, -0.333333f, 0.666667f); cube->textureCoord(0, 0);
-    cube->position(0.5f, 0.5f, 1.0f); cube->normal(0.666667f, 0.333333f, 0.666667f); cube->textureCoord(1, 0);
-    cube->position(-0.5f, -0.5f, 1.0f); cube->normal(-0.666667f, -0.333333f, 0.666667f); cube->textureCoord(0, 1);
-    cube->position(0.5f, -0.5f, 1.0f); cube->normal(0.408248f, -0.816497f, 0.408248f); cube->textureCoord(1, 1);
-    cube->position(-0.5f, 0.5f, 1.0f); cube->normal(-0.408248f, 0.816497f, 0.408248f); cube->textureCoord(0, 0);
-    cube->position(-0.5f, 0.5f, 0.0f); cube->normal(-0.666667f, 0.333333f, -0.666667f); cube->textureCoord(0, 1);
-    cube->position(-0.5f, -0.5f, 0.0f); cube->normal(-0.408248f, -0.816497f, -0.408248f); cube->textureCoord(1, 1);
-    cube->position(-0.5f, -0.5f, 1.0f); cube->normal(-0.666667f, -0.333333f, 0.666667f); cube->textureCoord(1, 0);
-    cube->position(0.5f, -0.5f, 0.0f); cube->normal(0.666667f, -0.333333f, -0.666667f); cube->textureCoord(0, 1);
-    cube->position(0.5f, 0.5f, 0.0f); cube->normal(0.408248f, 0.816497f, -0.408248f); cube->textureCoord(1, 1);
-    cube->position(0.5f, -0.5f, 1.0f); cube->normal(0.408248f, -0.816497f, 0.408248f); cube->textureCoord(0, 0);
-    cube->position(0.5f, -0.5f, 0.0f); cube->normal(0.666667f, -0.333333f, -0.666667f); cube->textureCoord(1, 0);
-    cube->position(-0.5f, -0.5f, 0.0f); cube->normal(-0.408248f, -0.816497f, -0.408248f); cube->textureCoord(0, 0);
-    cube->position(-0.5f, 0.5f, 1.0f); cube->normal(-0.408248f, 0.816497f, 0.408248f); cube->textureCoord(1, 0);
-    cube->position(0.5f, 0.5f, 0.0f); cube->normal(0.408248f, 0.816497f, -0.408248f); cube->textureCoord(0, 1);
-    cube->position(-0.5f, 0.5f, 0.0f); cube->normal(-0.666667f, 0.333333f, -0.666667f); cube->textureCoord(1, 1);
-    cube->position(0.5f, 0.5f, 1.0f); cube->normal(0.666667f, 0.333333f, 0.666667f); cube->textureCoord(0, 0);
-    cube->triangle(0, 1, 2);		cube->triangle(3, 1, 0);
-    cube->triangle(4, 5, 6);		cube->triangle(4, 7, 5);
-    cube->triangle(8, 9, 10);		cube->triangle(10, 7, 8);
-    cube->triangle(4, 11, 12);	cube->triangle(4, 13, 11);
-    cube->triangle(14, 8, 12);	cube->triangle(14, 15, 8);
-    cube->triangle(16, 17, 18);	cube->triangle(16, 19, 17);
-    cube->end();
-    cube->setDynamic(true);
+    m_Cubo = new Ogre::ManualObject(name);
+    m_Cubo->begin(materialeDaUsare);
+    m_Cubo->position(0.5f, -0.5f, 1.0f); m_Cubo->normal(0.408248f, -0.816497f, 0.408248f); m_Cubo->textureCoord(1, 0);
+    m_Cubo->position(-0.5f, -0.5f, 0.0f); m_Cubo->normal(-0.408248f, -0.816497f, -0.408248f); m_Cubo->textureCoord(0, 1);
+    m_Cubo->position(0.5f, -0.5f, 0.0f); m_Cubo->normal(0.666667f, -0.333333f, -0.666667f); m_Cubo->textureCoord(1, 1);
+    m_Cubo->position(-0.5f, -0.5f, 1.0f); m_Cubo->normal(-0.666667f, -0.333333f, 0.666667f); m_Cubo->textureCoord(0, 0);
+    m_Cubo->position(0.5f, 0.5f, 1.0f); m_Cubo->normal(0.666667f, 0.333333f, 0.666667f); m_Cubo->textureCoord(1, 0);
+    m_Cubo->position(-0.5f, -0.5f, 1.0f); m_Cubo->normal(-0.666667f, -0.333333f, 0.666667f); m_Cubo->textureCoord(0, 1);
+    m_Cubo->position(0.5f, -0.5f, 1.0f); m_Cubo->normal(0.408248f, -0.816497f, 0.408248f); m_Cubo->textureCoord(1, 1);
+    m_Cubo->position(-0.5f, 0.5f, 1.0f); m_Cubo->normal(-0.408248f, 0.816497f, 0.408248f); m_Cubo->textureCoord(0, 0);
+    m_Cubo->position(-0.5f, 0.5f, 0.0f); m_Cubo->normal(-0.666667f, 0.333333f, -0.666667f); m_Cubo->textureCoord(0, 1);
+    m_Cubo->position(-0.5f, -0.5f, 0.0f); m_Cubo->normal(-0.408248f, -0.816497f, -0.408248f); m_Cubo->textureCoord(1, 1);
+    m_Cubo->position(-0.5f, -0.5f, 1.0f); m_Cubo->normal(-0.666667f, -0.333333f, 0.666667f); m_Cubo->textureCoord(1, 0);
+    m_Cubo->position(0.5f, -0.5f, 0.0f); m_Cubo->normal(0.666667f, -0.333333f, -0.666667f); m_Cubo->textureCoord(0, 1);
+    m_Cubo->position(0.5f, 0.5f, 0.0f); m_Cubo->normal(0.408248f, 0.816497f, -0.408248f); m_Cubo->textureCoord(1, 1);
+    m_Cubo->position(0.5f, -0.5f, 1.0f); m_Cubo->normal(0.408248f, -0.816497f, 0.408248f); m_Cubo->textureCoord(0, 0);
+    m_Cubo->position(0.5f, -0.5f, 0.0f); m_Cubo->normal(0.666667f, -0.333333f, -0.666667f); m_Cubo->textureCoord(1, 0);
+    m_Cubo->position(-0.5f, -0.5f, 0.0f); m_Cubo->normal(-0.408248f, -0.816497f, -0.408248f); m_Cubo->textureCoord(0, 0);
+    m_Cubo->position(-0.5f, 0.5f, 1.0f); m_Cubo->normal(-0.408248f, 0.816497f, 0.408248f); m_Cubo->textureCoord(1, 0);
+    m_Cubo->position(0.5f, 0.5f, 0.0f); m_Cubo->normal(0.408248f, 0.816497f, -0.408248f); m_Cubo->textureCoord(0, 1);
+    m_Cubo->position(-0.5f, 0.5f, 0.0f); m_Cubo->normal(-0.666667f, 0.333333f, -0.666667f); m_Cubo->textureCoord(1, 1);
+    m_Cubo->position(0.5f, 0.5f, 1.0f); m_Cubo->normal(0.666667f, 0.333333f, 0.666667f); m_Cubo->textureCoord(0, 0);
+    m_Cubo->triangle(0, 1, 2);		m_Cubo->triangle(3, 1, 0);
+    m_Cubo->triangle(4, 5, 6);		m_Cubo->triangle(4, 7, 5);
+    m_Cubo->triangle(8, 9, 10);		m_Cubo->triangle(10, 7, 8);
+    m_Cubo->triangle(4, 11, 12);	m_Cubo->triangle(4, 13, 11);
+    m_Cubo->triangle(14, 8, 12);	m_Cubo->triangle(14, 15, 8);
+    m_Cubo->triangle(16, 17, 18);	m_Cubo->triangle(16, 19, 17);
+    m_Cubo->end();
+    m_Cubo->setDynamic(true);
 
-    return cube;
+    return m_Cubo;
 }

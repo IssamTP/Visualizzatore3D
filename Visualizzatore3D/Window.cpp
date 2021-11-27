@@ -185,6 +185,11 @@ void CWindow::SetIcon(UINT idRisorsa, bool usaCaricamentoAvanzato)
 
 #pragma region Notifiche
 
+void CWindow::OnClose()
+{
+
+}
+
 void CWindow::OnNotify(UINT idNotificatore, LPNMHDR nmhdr)
 {
 }

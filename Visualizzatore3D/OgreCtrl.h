@@ -11,6 +11,7 @@ class COgreCtrl : public CWindow
 {
 protected:
 	Ogre::Camera* m_pCamera;
+	Ogre::ManualObject* m_Cubo;
 	Ogre::Radian m_Rotazione;
 	Ogre::RenderWindow* m_pRenderWindow;
 	Ogre::SceneManager* m_pSceneManager;
@@ -23,6 +24,7 @@ public:
 	void ImpostaMateriale(Ogre::String nomeMateriale);
 	void ImpostaRotazione(int angoloSessagesimale, unsigned short asse);
 	void InizializzaControllo(HWND parentHandle, RECT& dimensioni);
+	void LiberaRisorseOgre();
 protected:
 	void CaricaNomiMateriali();
 	Ogre::ManualObject* CreaCubo(Ogre::String name, Ogre::MaterialPtr materialeDaUsare);

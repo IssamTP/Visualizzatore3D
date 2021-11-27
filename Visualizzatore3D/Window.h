@@ -44,6 +44,7 @@ public:
 	LONG LarghezzaFinestra() const;
 	operator HWND();
 protected:
+	virtual void OnClose();
 	virtual void OnHScroll(UINT operazione, int posizione, HANDLE scrollBar);
 	virtual void OnNotify(UINT idNotificatore, LPNMHDR nmhdr);
 	virtual void OnPaint(LPPAINTSTRUCT datiDisegno);

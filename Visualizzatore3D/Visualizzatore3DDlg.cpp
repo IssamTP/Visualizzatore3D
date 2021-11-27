@@ -108,6 +108,11 @@ void CVisualizzatore3DDlg::CreaControlliDaRisorse()
 
 #pragma region Gestione Eventi
 
+void CVisualizzatore3DDlg::OnClose()
+{
+	m_pOgre->LiberaRisorseOgre();
+}
+
 /// <summary>
 /// Implementazione dell'evento di scroll orizzontale.
 /// </summary>
